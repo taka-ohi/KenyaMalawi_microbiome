@@ -1,7 +1,7 @@
 ####
 #### R script for Ohigashi et al (2024)
 #### 
-#### 2024.06.24 Ohigashi
+#### 2024.06.24 written by Ohigashi
 #### R 4.3.3
 
 dir.create("00_SessionInfo")
