@@ -10,4 +10,4 @@ dir.create("FigCode")
 dir.create("Function")
 
 writeLines(capture.output(sessionInfo()),
-           sprintf("00_SessionInfo/01_SessionInfo_%s.txt", substr(Sys.time(), 1, 10)))
+           sprintf("00_SessionInfo/00_SessionInfo_%s.txt", substr(Sys.time(), 1, 10)))
