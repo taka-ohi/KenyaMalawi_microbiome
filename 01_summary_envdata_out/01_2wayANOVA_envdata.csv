@@ -1,0 +1,4 @@
+,Gravimetric.water.content,Carbon,Nitrogen,CN_ratio,pH,log_copy16S_persoil,log_copyITS_persoil,shannon_16S,shannon_ITS
+Site,p < 0.001,p < 0.001,p < 0.001,p < 0.001,p < 0.001,n.s.,n.s.,p < 0.001,p < 0.001
+Landuse,p < 0.001,p < 0.001,n.s.,p < 0.05,p < 0.001,p < 0.001,p < 0.001,p < 0.05,n.s.
+Site × Landuse,p < 0.01,p < 0.01,p < 0.05,n.s.,p < 0.001,n.s.,p < 0.05,p < 0.001,p < 0.001

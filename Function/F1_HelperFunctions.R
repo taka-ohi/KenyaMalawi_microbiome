@@ -1,0 +1,158 @@
+####
+#### R script for Ohigashi et al (2024)
+#### 
+#### Collection of helper functions for indicating significance level
+#### 2024.06.25 Ohigashi
+#### 
+
+### function performing 2way ANOVA
+Do2wayANOVA <- function(data, factor1, factor2, showingstyle = "pval", transformation = "sqrt", log_offset = 1, start_col = 1, end_col = ncol(data)) {
+  factor1_col <- data[[factor1]]
+  factor2_col <- data[[factor2]]
+  # Create a 3x1 matrix with initial values of 0
+  p_summary <- matrix(rep(0, 3), nrow = 3, ncol = 1)
+  # Set row names and column name for the matrix
+  row.names(p_summary) <- c(factor1, factor2, paste(factor1, factor2, sep = " × "))  # Replace these with your actual row names
+  colnames(p_summary) <- c("dummy")  # Replace this with your actual column name
+  
+  for (i in start_col:end_col) {
+    # Combine the current column with factor columns for splitting by groups
+    current_data <- data[, c(i, which(colnames(data) %in% c(factor1, factor2)))]
+    group_data <- split(current_data, interaction(factor1_col, factor2_col))
+  
+    # Determine if any group fails the normality test
+    normal <- TRUE
+    for (group in group_data) {
+      if (shapiro.test(group[[1]])$p.value < 0.05) {
+        normal <- FALSE
+        break
+      }
+    }
+    
+    # Apply transformation if any group is not normal
+    if (!normal) {
+      if (transformation == "log") {
+        if (min(na.omit(data[,i])) + log_offset <= 0) {
+          stop("Data contains values that will result in non-positive values after adding the log offset, which are not suitable for log transformation.")
+        }
+        data[,i] <- log(data[,i] + log_offset)
+      } else if (transformation == "sqrt") {
+        if (min(na.omit(data[,i])) < 0) {
+          data[,i] <- sqrt(data[,i] - min(na.omit(data[,i])))
+        } else {
+          data[,i] <- sqrt(data[,i])
+        }
+      } else {
+        stop("Invalid transformation type. Use 'sqrt' or 'log'.")
+      }
+    }
+    
+    # Model fitting and ANOVA
+    formula <- as.formula(paste0("data[,i] ~ ", factor1, "*", factor2))
+    model <- lm(formula, data = data)
+    anova_summary <- anova(model)
+    anova_summary2 <- data.frame(anova_summary[1:3,5])
+    colnames(anova_summary2) <- colnames(data[i])
+    # row.names(anova_summary2) <- row.names(anova_summary)[1:3]
+    # row.names(anova_summary2)[3] <- sub(":", " × ", row.names(anova_summary2)[3])
+    row.names(anova_summary2) <- row.names(p_summary)
+    p_summary <- cbind(p_summary, anova_summary2)
+  }
+  
+  # Format and return results based on the specified style
+  row_names <- row.names(p_summary)
+  p_summary_res <- p_summary[,-1]
+  if (showingstyle == "pval") {
+    p_summary_res_df <- as.data.frame(lapply(p_summary_res, function(x) {
+      ifelse(x < 0.001, "p < 0.001",
+             ifelse(x < 0.01, "p < 0.01",
+                    ifelse(x < 0.05, "p < 0.05", "n.s.")))
+    }))
+  } else if (showingstyle == "asterisk") {
+    p_summary_res_df <- as.data.frame(lapply(p_summary_res, function(x) {
+      ifelse(x < 0.001, "***",
+             ifelse(x < 0.01, "**",
+                    ifelse(x < 0.05, "*", "n.s.")))
+    }))
+  } else {
+    stop("Invalid showing style. Use 'pval' or 'asterisk'.")
+  }
+  row.names(p_summary_res_df) <- row_names
+  return(p_summary_res_df)
+}
+
+
+
+
+### function performing Tukey`s test
+DoTukeyTest <- function(data, factor1, factor2=NULL, transformation = "sqrt", log_offset = 1, start_col = 1, end_col = ncol(data)) {
+  # get factor columns
+  if (is.null(factor2)) {
+    factor1_col <- data[[factor1]]
+    treat <- factor1_col
+  } else {
+    factor1_col <- data[[factor1]]
+    factor2_col <- data[[factor2]]
+    treat <- paste(factor1_col, factor2_col, sep = "_") # create a column that combines the factors
+  }
+  results <- data.frame(treat=unique(treat))
+  
+  for (i in start_col:end_col) {
+    # Combine the current column with factor columns for splitting by groups
+    current_data <- data[, c(i, which(colnames(data) %in% c(factor1, factor2)))]
+    group_data <- split(current_data, interaction(factor1_col, factor2_col))
+    
+    # Determine if any group fails the normality test
+    normal <- TRUE
+    for (group in group_data) {
+      if (shapiro.test(group[[1]])$p.value < 0.05) {
+        normal <- FALSE
+        break
+      }
+    }
+    
+    # Apply transformation if any group is not normal
+    if (!normal) {
+      if (transformation == "log") {
+        if (min(na.omit(data[,i])) + log_offset <= 0) {
+          stop("Data contains values that will result in non-positive values after adding the log offset, which are not suitable for log transformation.")
+        }
+        data[,i] <- log(data[,i] + log_offset)
+      } else if (transformation == "sqrt") {
+        if (min(na.omit(data[,i])) < 0) {
+          data[,i] <- sqrt(data[,i] - min(na.omit(data[,i])))
+        } else {
+          data[,i] <- sqrt(data[,i])
+        }
+      } else {
+        stop("Invalid transformation type. Use 'sqrt' or 'log'.")
+      }
+    }
+    
+    # Model fitting and Tukey HSD test
+    # formula <- as.formula(paste0("data[,i] ~ ", factor1, "*", factor2))
+    data <- data |> mutate(treat = treat)
+    formula <- as.formula(paste0("data[,i] ~ ", "treat"))
+    model <- lm(formula, data = data)
+    # tukey_result <- glht(model, linfct = mcp(treat = "Tukey"))
+    # tukey_cld <- cld(tukey_result)
+    mod_aov <- aov(model)
+    tukey <- HSD.test(mod_aov, "treat", console = F)
+    tukey_group <- tukey[["groups"]]
+    tukey_group <- tukey_group |>
+      dplyr::select(groups) |>
+      mutate(treat = rownames(tukey_group))
+    colnames(tukey_group)[1] <- colnames(data)[i]
+    
+    # Extract the grouping information
+    # group_labels <- tukey_cld$mcletters$Letters
+    # variable_name <- colnames(data)[i]
+    results <- merge(results, tukey_group, by = "treat")
+  }
+  
+  return(results)
+}
+
+
+
+  
