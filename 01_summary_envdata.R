@@ -142,6 +142,7 @@ tbl_formatted <-
   )
 print(tbl_formatted)
 
+
 #### save files
 dir.create("01_summary_envdata_out")
 saveRDS(env2way_summary, file = "01_summary_envdata_out/01_2wayANOVA_envdata.obj")
