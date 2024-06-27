@@ -81,6 +81,66 @@ Do2wayANOVA <- function(data, factor1, factor2, showingstyle = "pval", transform
   return(p_summary_res_df)
 }
 
+### function performing 2way ANOVA succeeding to a table (gtsummary)
+Do2wayANOVA_table <- function(data, factor1, factor2, transformation = "sqrt", log_offset = 1, start_col = 1, end_col = ncol(data)) {
+  factor1_col <- data[[factor1]]
+  factor2_col <- data[[factor2]]
+  
+  twoway_results <- data.frame(factor1=0, factor2=0, interaction=0, variable=NA, row_type=NA)
+  colnames(twoway_results)[1] <- factor1
+  colnames(twoway_results)[2] <- factor2
+  for (i in start_col:end_col) {
+    # Combine the current column with factor columns for splitting by groups
+    current_data <- data[, c(i, which(colnames(data) %in% c(factor1, factor2)))]
+    group_data <- split(current_data, interaction(factor1_col, factor2_col))
+    
+    # Determine if any group fails the normality test
+    normal <- TRUE
+    for (group in group_data) {
+      if (shapiro.test(group[[1]])$p.value < 0.05) {
+        normal <- FALSE
+        break
+      }
+    }
+    
+    # Apply transformation if any group is not normal
+    if (!normal) {
+      if (transformation == "log") {
+        if (min(na.omit(data[,i])) + log_offset <= 0) {
+          stop("Data contains values that will result in non-positive values after adding the log offset, which are not suitable for log transformation.")
+        }
+        data[,i] <- log(data[,i] + log_offset)
+      } else if (transformation == "sqrt") {
+        if (min(na.omit(data[,i])) < 0) {
+          data[,i] <- sqrt(data[,i] - min(na.omit(data[,i])))
+        } else {
+          data[,i] <- sqrt(data[,i])
+        }
+      } else {
+        stop("Invalid transformation type. Use 'sqrt' or 'log'.")
+      }
+    }
+    
+    # Model fitting and ANOVA
+    anovasummary <- 
+      as.formula(paste0("data[,i] ~ ", factor1, "*", factor2)) |>
+      aov(data = data) %>% 
+      broom::tidy() %>%
+      select(term, p.value) %>%
+      filter(complete.cases(.)) %>%
+      pivot_wider(names_from = term, values_from = p.value) %>%
+      mutate(
+        variable = names(data)[i],
+        row_type = "label"
+      )
+    colnames(anovasummary)[3] <- "interaction"
+    twoway_results <- bind_rows(twoway_results, anovasummary)
+  }
+  
+  # Format and return results based on the specified style
+  twoway_results <- twoway_results[-1,]
+  return(twoway_results)
+}
 
 
 
