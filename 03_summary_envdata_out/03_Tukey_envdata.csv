@@ -1,0 +1,11 @@
+,treat,Gravimetric.water.content,Carbon,Nitrogen,CN_ratio,pH,log_copy16S_persoil,log_copyITS_persoil,shannon_16S,shannon_ITS
+1,D_Natural,a,a,a,a,b,a,ab,c,c
+2,D_Farm,b,bc,abc,a,c,ab,bc,bc,ab
+3,E_Natural,b,c,ab,ab,b,ab,bc,c,ab
+4,E_Farm,b,bc,a,abc,b,ab,bc,c,a
+5,F_Natural,c,d,ab,bc,b,ab,ab,c,ab
+6,F_Farm,c,d,ab,c,e,ab,abc,a,ab
+7,G_Natural,d,d,c,a,a,a,a,a,ab
+8,G_Farm,de,d,c,ab,d,b,c,ab,bc
+9,H_Natural,d,ab,abc,a,c,ab,ab,a,abc
+10,H_Farm,e,c,bc,a,de,ab,abc,a,a
