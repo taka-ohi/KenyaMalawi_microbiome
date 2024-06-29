@@ -35,10 +35,18 @@ rared_seqs <- unrared_seqs |>
   dplyr::filter(ASV %in% rared_asvname)
 
 # output fasta file
+dir.create("02_Function_analysis_out/")
 for (i in 1:nrow(rared_seqs)) {
-  write(paste0(">", rared_seqs[i,1]), file = "01_DADA2_out/rarefied_ASV_seqs_16S.fasta", append = TRUE)
-  write(rared_seqs[i,2], file= "01_DADA2_out/rarefied_ASV_seqs_16S.fasta", append = TRUE)
+  write(paste0(">", rared_seqs[i,1]), file = "02_Function_analysis_out/rarefied_ASV_seqs_16S.fasta", append = TRUE)
+  write(rared_seqs[i,2], file= "02_Function_analysis_out/rarefied_ASV_seqs_16S.fasta", append = TRUE)
 }
+
+### get a count table w/o taxonomic information
+rared_ASV.table_wo_taxa <- rared_ASV.table[,1:(ncol(rared_ASV.table)-7)]
+rared_ASV.table_wo_taxa <- rared_ASV.table_wo_taxa |> rownames_to_column(var = "ID")
+# output
+write.table(rared_ASV.table_wo_taxa, file = "02_Function_analysis_out/rarefied_ASV_table_16S_wo_taxa.txt",
+            quote = F, row.names = F, sep = "\t")
 
 ### save session info
 setwd("~/Desktop/analysis/R_kenmal/KenyaMalawi_microbiome/")

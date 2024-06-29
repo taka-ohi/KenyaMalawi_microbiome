@@ -1,0 +1,6 @@
+conda activate picrust2
+cd ~/Desktop/analysis/R_kenmal/KenyaMalawi_microbiome
+picrust2_pipeline.py -s 02_Function_analysis_out/rarefied_ASV_seqs_16S.fasta -i 02_Function_analysis_out/rarefied_ASV_table_16S_wo_taxa.txt -o 02_Function_analysis_out/picrust2_out_pipeline_rarefied -p 1 --per_sequence_contrib --stratified
+gunzip 02_Function_analysis_out/picrust2_out_pipeline_rarefied/EC_metagenome_out/*gz
+gunzip 02_Function_analysis_out/picrust2_out_pipeline_rarefied/KO_metagenome_out/*gz
+gunzip 02_Function_analysis_out/picrust2_out_pipeline_rarefied/pathways_out/*gz
