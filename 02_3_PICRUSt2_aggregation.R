@@ -39,16 +39,16 @@ summarised_data.t <- t(summarised_data)
 
 ### save data
 # aggregated CN function
-write.csv(summarised_data.t, "02_Function_analysis_out/02_3_PICRUSt2_aggregated_CN_function.csv", row.names = T, quote = F)
+write.csv(summarised_data.t, "02_Function_analysis_out/PICRUSt2_aggregated_CN_function.csv", row.names = T, quote = F)
 
 # non-aggregated CN function
 non_agr <- merge(func_database, picrust_data, by = "KO", all.x = T, sort = T)
-write.csv(non_agr, "02_Function_analysis_out/02_3_PICRUSt2_CN_function_table.csv", row.names = T, quote = F)
+write.csv(non_agr, "02_Function_analysis_out/PICRUSt2_CN_function_table.csv", row.names = T, quote = F)
 
 # full function
 picrust_data_wo_KO <- picrust_data |> dplyr::select(-KO)
 picrust_data.t <- t(picrust_data_wo_KO)
-write.csv(picrust_data.t, "02_Function_analysis_out/02_3_PICRUSt2_full_function.csv", row.names = T, quote = F)
+write.csv(picrust_data.t, "02_Function_analysis_out/PICRUSt2_full_function.csv", row.names = T, quote = F)
 
 ### save session info
 writeLines(capture.output(sessionInfo()),
