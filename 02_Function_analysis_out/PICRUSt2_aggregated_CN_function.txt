@@ -1,4 +1,4 @@
-Autotrophic C fixation	Cellulose breakdown	Chitin breakdown	Denitrification	Lignin breakdown	Methane oxidation	Methanogenesis	N fixation	Nitrification	Xylan breakdown
+Autotrophic_C_fixation	Cellulose_breakdown	Chitin_breakdown	Denitrification	Lignin_breakdown	Methane_oxidation	Methanogenesis	N_fixation	Nitrification	Xylan_breakdown
 K01	45783.15	505.34	1266.33	10123.35	214.6	162	15055.03	96	2674	3232.68
 K02	46519.27	560.66	1290.49	10447.12	277.5	65	15736.58	165	3666	3309.32
 K03	44850.75	384.17	1429.68	10860.18	190.5	61	15550.87	183	4756	3394

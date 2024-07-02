@@ -27,8 +27,8 @@ merged <- merged |>
   na.omit()
 
 # sum by function category
-summarised_data <- merged %>%
-  group_by(Function) %>%
+summarised_data <- merged |>
+  group_by(Function) |>
   summarise(across(everything(), sum))
 
 # function names as row names
