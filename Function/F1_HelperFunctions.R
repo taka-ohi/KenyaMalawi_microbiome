@@ -1,11 +1,11 @@
 ####
 #### R script for Ohigashi et al (2024)
 #### 
-#### Collection of helper functions for indicating significance level
+#### Collection of helper functions for descriptive statistics
 #### 2024.06.25 Ohigashi
 #### 
 
-### function performing 2way ANOVA
+### function performing 2way ANOVA for multiple variavles
 Do2wayANOVA <- function(data, factor1, factor2, showingstyle = "pval", transformation = "sqrt", log_offset = 1, start_col = 1, end_col = ncol(data)) {
   factor1_col <- data[[factor1]]
   factor2_col <- data[[factor2]]
@@ -144,7 +144,7 @@ Do2wayANOVA_table <- function(data, factor1, factor2, transformation = "sqrt", l
 
 
 
-### function performing Tukey`s test
+### function performing Tukey's test for multiple variables 
 DoTukeyTest <- function(data, factor1, factor2=NULL, transformation = "sqrt", log_offset = 1, start_col = 1, end_col = ncol(data)) {
   # get factor columns
   if (is.null(factor2)) {
@@ -213,6 +213,3 @@ DoTukeyTest <- function(data, factor1, factor2=NULL, transformation = "sqrt", lo
   return(results)
 }
 
-
-
-  
