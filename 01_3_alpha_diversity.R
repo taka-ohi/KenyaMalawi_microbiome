@@ -1,7 +1,7 @@
 ####
 #### R script for Ohigashi et al (2024)
 #### calculate alpha diversity indeces for both prokaryotes and fungi
-#### 2024.07.02 written by Ohigashi
+#### 2024.07.02 written by Ohigashi; 2024.07.04 editted by Ohigashi
 #### R 4.3.3
 ####
 
@@ -31,7 +31,8 @@ b_div <- as.data.frame(cbind(
   shannon = diversity(b_ASV.t, index = "shannon", base = 2), 
   simpson = diversity(b_ASV.t, index = "simpson"), 
   invsimpson = diversity(b_ASV.t, index = "invsimpson"), 
-  fisher = fisher.alpha(b_ASV.t)
+  fisher = fisher.alpha(b_ASV.t),
+  richness = specnumber(b_ASV.t)
 ))
 
 # fungi
@@ -39,7 +40,8 @@ f_div <- as.data.frame(cbind(
   shannon = diversity(f_ASV.t, index = "shannon", base = 2), 
   simpson = diversity(f_ASV.t, index = "simpson"), 
   invsimpson = diversity(f_ASV.t, index = "invsimpson"), 
-  fisher = fisher.alpha(f_ASV.t)
+  fisher = fisher.alpha(f_ASV.t),
+  richness = specnumber(f_ASV.t)
 ))
 
 
