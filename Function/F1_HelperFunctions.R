@@ -213,3 +213,17 @@ DoTukeyTest <- function(data, factor1, factor2=NULL, transformation = "sqrt", lo
   return(results)
 }
 
+
+### function calculating distance to centroids by the group
+DistToCent <- function(mat, method = "bray", group, name) {
+  # Calculate the vegdist
+  veg_dist <- vegdist(mat, method = method)
+  # Perform betadisper
+  beta_disp <- betadisper(veg_dist, group)
+  # Extract distances to centroids
+  dist_to_cent <- as.data.frame(beta_disp$distances)
+  # Set the column name
+  colnames(dist_to_cent) <- name
+  return(dist_to_cent)
+}
+
