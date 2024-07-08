@@ -227,3 +227,23 @@ DistToCent <- function(mat, method = "bray", group, name) {
   return(dist_to_cent)
 }
 
+
+
+### function calculating correlations between variables within a category
+CorrInCat <- function(data, var1, var2, method = "pearson", category) {
+  treatment <- unique(data[[category]]) # ex. Site
+  cor_result <- data.frame(r=NA, p.value=NA) # make a dummy data frame
+  for (i in 1:length(treatment)){
+    sub_df <- data |> dplyr::filter(data[[category]]==treatment[i]) # subset by category
+    var1_col <- sub_df[[var1]]
+    var2_col <- sub_df[[var2]]
+    cor <- cor.test(var1_col, var2_col, method = method) # correlation test
+    cor_summary <- cbind(cor$estimate, cor$p.value)
+    colnames(cor_summary) <- c("r", "p.value")
+    row.names(cor_summary) <- treatment[i]
+    cor_result <- rbind(cor_result, cor_summary)
+  }
+  cor_result <- na.omit(cor_result) # remove NA row
+  return(cor_result)
+}
+
