@@ -112,7 +112,7 @@ functable <- functable |> rownames_to_column(var = "Sample")
 
 ### save data
 write.table(rarefied_fungaltrait, file = "02_Function_analysis_out/FungalTraits_w_rarefied_ASV_table_fungi.txt", row.names = T, quote = F, sep = "\t")
-write.table(agr_fungaltrait, file = "02_Function_analysis_out/FungalTraits_primarilifestyle_percent.txt", row.names = T, quote = F, sep = "\t")
+write.table(agr_fungaltrait, file = "02_Function_analysis_out/FungalTraits_primarilifestyle_percent.txt", row.names = F, quote = F, sep = "\t")
 write.table(functable, file = "02_Function_analysis_out/FungalTraits_specific_functions.txt", row.names = F, quote = F, sep = "\t")
 
 
