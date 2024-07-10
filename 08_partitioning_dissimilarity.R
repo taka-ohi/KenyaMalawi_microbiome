@@ -69,6 +69,7 @@ prok.S.3_df <- prok.S.3_df |>
 
 
 # fungi
+# calculation Sorensen dissimilarity
 fungi.S <- beta.div.comp(f_ASV.t, coef = "S", quant = FALSE)
 fungi.S.3 <- cbind((1-fungi.S$D),
                    fungi.S$repl,
