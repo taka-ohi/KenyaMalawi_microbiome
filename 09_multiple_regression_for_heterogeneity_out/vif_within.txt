@@ -1,0 +1,10 @@
+x
+scale(Farming)	2.60579024338897
+scale(Moisture)	2.01976022352631
+scale(Carbon)	1.78582936688783
+scale(Nitrogen)	1.57712046711909
+scale(pH)	2.15602398065044
+scale(Moisture_absdev_within)	1.58455156370293
+scale(Carbon_absdev_within)	1.38410253670647
+scale(Nitrogen_absdev_within)	1.1946428811246
+scale(pH_absdev_within)	1.17869856428683
