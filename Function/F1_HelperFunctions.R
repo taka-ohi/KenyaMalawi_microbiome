@@ -247,3 +247,15 @@ CorrInCat <- function(data, var1, var2, method = "pearson", category) {
   return(cor_result)
 }
 
+
+
+### function converting Lat/Lon data (e.g., N32° -> 32)
+dms_to_deg <- function(dms_string) {
+  parts <- as.numeric(strsplit(gsub("[^0-9.]", " ", dms_string), " ")[[1]])
+  deg <- parts[2] + parts[3]/60 + parts[4]/3600
+  if (substring(dms_string, 1, 1) %in% c("W", "S")) {
+    deg <- -deg
+  }
+  return(deg)
+}
+
