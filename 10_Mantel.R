@@ -1,7 +1,7 @@
 ####
 #### R script for Ohigashi et al (2024)
 #### Mantel correlogram for microbial community x spatial distance
-#### 2024.07.12 written by Ohigashi
+#### 2024.07.12 written by Ohigashi -> 2024.07.14 modified by Ohigashi
 #### R 4.3.3
 ####
 
@@ -83,20 +83,20 @@ env_xy <- env_xy |>
 b_ASV.t_lu <- as.data.frame(b_ASV.t)
 b_ASV.t_lu$Landuse <- env_data$Landuse
 b_ASV.t_nat <- b_ASV.t_lu |>
-  dplyr::filter(Landuse == "Natural") |>
+  dplyr::filter(Landuse == "Natural") |> # extract
   dplyr::select(-Landuse)
 b_ASV.t_farm <- b_ASV.t_lu |>
-  dplyr::filter(Landuse == "Farm") |>
+  dplyr::filter(Landuse == "Farm") |> # extract
   dplyr::select(-Landuse)
 
 # fungi
 f_ASV.t_lu <- as.data.frame(f_ASV.t)
 f_ASV.t_lu$Landuse <- env_data$Landuse
 f_ASV.t_nat <- f_ASV.t_lu |>
-  dplyr::filter(Landuse == "Natural") |>
+  dplyr::filter(Landuse == "Natural") |> # extract
   dplyr::select(-Landuse)
 f_ASV.t_farm <- f_ASV.t_lu |>
-  dplyr::filter(Landuse == "Farm") |>
+  dplyr::filter(Landuse == "Farm") |> # extract
   dplyr::select(-Landuse)
 
 # calculate bray dissimilarity
@@ -116,7 +116,8 @@ b_ASV.correlog.bray_nat <- mantel.correlog(
   b_ASV.bray_nat,
   XY = env_xy_nat[15:16],
   nperm = 99999,
-  break.pts = c(0, 200, 70000, 1500000) # how I determined the values is written later☆
+  cutoff = FALSE, # set as FALSE otherwise it generates NA
+  break.pts = c(0, 200, 30000, 70000, 1444000, 1500000) # how I determined the values is written later☆
 )
 plot(b_ASV.correlog.bray_nat)
 prok_mantel_nat <- b_ASV.correlog.bray_nat$mantel.res
@@ -126,20 +127,21 @@ b_ASV.correlog.bray_farm <- mantel.correlog(
   b_ASV.bray_farm,
   XY = env_xy_farm[15:16],
   nperm = 99999,
-  break.pts = c(0, 200, 70000, 1500000) # how I determined the values is written later☆
+  cutoff = FALSE, # set as FALSE otherwise it generates NA
+  break.pts = c(0, 200, 30000, 70000, 1444000, 1500000) # how I determined the values is written later☆
 )
 plot(b_ASV.correlog.bray_farm)
 prok_mantel_farm <- b_ASV.correlog.bray_farm$mantel.res
 
 # combine Natural and Farm data
 prok_mantel_nat <- as.data.frame(prok_mantel_nat)
-prok_mantel_nat$landuse <- rep("Natural", 3)
+prok_mantel_nat$landuse <- rep("Natural", 5)
 prok_mantel_farm <- as.data.frame(prok_mantel_farm)
-prok_mantel_farm$landuse <- rep("Farm", 3)
+prok_mantel_farm$landuse <- rep("Farm", 5)
 
 prok_mantel_df <- rbind(prok_mantel_nat, prok_mantel_farm)
-prok_mantel_df$class.index <- c("0_200", "200_70000", "70000_1500000",
-                                "0_200", "200_70000", "70000_1500000")
+prok_mantel_df$class.index <- c("0_200", "200_30000", "30000_70000", "70000_1444000", "1444000_1500000",
+                                "0_200", "200_30000", "30000_70000", "70000_1444000", "1444000_1500000")
 
 ## Mantel test (fungi)
 # natural
@@ -147,7 +149,8 @@ f_ASV.correlog.bray_nat <- mantel.correlog(
   f_ASV.bray_nat,
   XY = env_xy_nat[15:16],
   nperm = 99999,
-  break.pts = c(0, 200, 70000, 1500000) # how I determined the values is written later☆
+  cutoff = FALSE, # set as FALSE otherwise it generates NA
+  break.pts = c(0, 200, 30000, 70000, 1444000, 1500000) # how I determined the values is written later☆
 )
 plot(f_ASV.correlog.bray_nat)
 fungi_mantel_nat <- f_ASV.correlog.bray_nat$mantel.res
@@ -157,20 +160,21 @@ f_ASV.correlog.bray_farm <- mantel.correlog(
   f_ASV.bray_farm,
   XY = env_xy_farm[15:16],
   nperm = 99999,
-  break.pts = c(0, 200, 70000, 1500000) # how I determined the values is written later☆
+  cutoff = FALSE, # set as FALSE otherwise it generates NA
+  break.pts = c(0, 200, 30000, 70000, 1444000, 1500000) # how I determined the values is written later☆
 )
 plot(f_ASV.correlog.bray_farm)
 fungi_mantel_farm <- f_ASV.correlog.bray_farm$mantel.res
 
 # combine Natural and Farm data
 fungi_mantel_nat <- as.data.frame(fungi_mantel_nat)
-fungi_mantel_nat$landuse <- rep("Natural", 3)
+fungi_mantel_nat$landuse <- rep("Natural", 5)
 fungi_mantel_farm <- as.data.frame(fungi_mantel_farm)
-fungi_mantel_farm$landuse <- rep("Farm", 3)
+fungi_mantel_farm$landuse <- rep("Farm", 5)
 
 fungi_mantel_df <- rbind(fungi_mantel_nat, fungi_mantel_farm)
-fungi_mantel_df$class.index <- c("0_200", "200_70000", "70000_1500000",
-                                "0_200", "200_70000", "70000_1500000")
+fungi_mantel_df$class.index <- c("0_200", "200_30000", "30000_70000", "70000_1444000", "1444000_1500000",
+                                 "0_200", "200_30000", "30000_70000", "70000_1444000", "1444000_1500000")
 
 
 ######## how to determine the distance class (break.pts) above ☆ #########
@@ -242,6 +246,9 @@ distdata_sorted |>
 # 3 within_site                  133.
 
 # -> so, I set the distance class at 0~200 m, 200~70000 m, and 70000~1500000 m
+# -> on 2024.07.14, increased the number of distance class 0~200, 200~30000, 30000~700000, 70000~1444000, 1444000~1500000
+# 30000 is a distance that includes any pairs of 2 sites but Site F.
+# 1444000 is a distance that includes "Site F to G or H", but "Site D or E to G or H"
 
 
 ### save data
