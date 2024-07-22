@@ -50,3 +50,10 @@ scaleFUN2 <- function(x) {
 }
 
 
+
+### import font for PDF
+# library(extrafont); packageVersion("extrafont")
+# font_import()
+# loadfonts(device = "")
+
+
