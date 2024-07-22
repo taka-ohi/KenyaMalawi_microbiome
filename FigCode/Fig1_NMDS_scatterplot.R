@@ -31,11 +31,23 @@ fig1_all <- plot_grid(nmds_prok + theme(legend.position = "none",
                       rel_widths = c(1, 1, 0.4),
                       labels = c("a", "b", NA)
                       )
-dir.create("FigCode/Fig1_out")
-# ggsave(filename = "FigCode/Fig1_out/Fig1_NMDS.pdf", plot = fig1_all, width = 13.2, height = 5.5,
-#        device = cairo_pdf()
-#        )
-# somehow generates garbled texts... so give up pdf here
 
+# create a directory
+dir.create("FigCode/Fig1_out")
+
+# save PDF
+cairo_pdf("FigCode/Fig1_out/Fig1_NMDS.pdf", width = 13.2, height = 5.5)
+print(fig1_all)
+dev.off()
+
+# save png
 ggsave(filename = "FigCode/Fig1_out/Fig1_NMDS.png", plot = fig1_all, width = 13.2, height = 5.5)
+
+
+### save session info
+# create a directory
+dir.create("FigCode/Fig_SessionInfo")
+writeLines(capture.output(sessionInfo()),
+           # please change 0X or XX below to the script number you used.
+           sprintf("FigCode/Fig_SessionInfo/Fig1_SessionInfo_%s.txt", substr(Sys.time(), 1, 10)))
 
