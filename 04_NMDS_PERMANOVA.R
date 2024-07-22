@@ -154,12 +154,12 @@ b_ef_table_sig <- b_ef_table_sig |>
              factor == "Nitrification" ~ "Nitrifying",
              factor == "Cellulose_breakdown" ~ "Cellulolytic",
              factor == "Chitin_breakdown" ~ "Chitinolytic",
-             factor == "Autotrophic_Carbon_fixation" ~ "Autotroph",
+             factor == "Autotrophic_C_fixation" ~ "Autotroph",
              factor == "Denitrification" ~ "Denitrifying",
              factor == "Lignin_breakdown" ~ "Lignolytic",
              factor == "Methane_oxidation" ~ "Methanotroph",
              factor == "Methanogenesis" ~ "Methanogen",
-             factor == "Nitrogen_fixation" ~ "Nitrogen-fixing",
+             factor == "N_fixation" ~ "Nitrogen-fixing",
              factor == "Xylan_breakdown" ~ "Xylanolytic",
              factor == "Gravimetric.water.content" ~ "Moisture",
              TRUE ~ factor
@@ -189,14 +189,16 @@ fungititle <- sprintf("Fungi (Stress = %s)", round(f_ord$stress, 2))
 # prokaryotes
 gb <- ggplot() +
   geom_point(data=b_data.scores, aes(x=NMDS1, y=NMDS2, fill=Landuse, shape=Site), size=4) +
-  scale_fill_manual(values=c("Farm"="orange", "Natural"="green")) +
-  scale_shape_manual(values = c("D"=21, "E"=22, "F"=23, "G"=24, "H"=25)) +
+  scale_fill_manual(name = "Landuse", values=c("Farm"="orange", "Natural"="green"), guide = guide_legend(override.aes = list(shape=21))) +
+  scale_shape_manual(name = "Site", values = c("D"=21, "E"=22, "F"=23, "G"=24, "H"=25)) +
   theme_bw() +
   theme(panel.border = element_rect(size = 1.2, colour = "black"),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
-        legend.position = "none",
+        legend.position = "right",
+        legend.title = element_text(size = 15, face = "bold", colour = "black"),
+        legend.text = element_text(size = 15, face = "bold", colour = "black"),
         plot.title = element_text(size=15, face = "bold", colour = "black"),
         axis.text=element_text(size=10, face = "bold", colour = "black"),
         axis.title=element_text(size=10,face="bold", colour = "black"))+
@@ -207,24 +209,26 @@ gb <- ggplot() +
            label=b_perm_result,
            hjust="left",
            size = 4)+
-  geom_segment(data = b_ef_table_sig, aes(x=0, y=0, xend=NMDS1*1.2, yend=NMDS2*1.2, colour= Type),
+  geom_segment(data = b_ef_table_sig, aes(x=0, y=0, xend=NMDS1*1.2, yend=NMDS2*1.2, color= Type),
                size=0.5,arrow=arrow(type = "open", length = unit(0.08, "inches")), show.legend = F) +
   geom_text_repel(data = b_ef_table_sig, aes(x = NMDS1*1.5, y = NMDS2*1.5, label = Guild, color=Type),
                   size = 4, show.legend = F)+
-  scale_color_manual(values = c("function"="blue", "environment"="red"))
+  scale_color_manual(name = "Type", values = c("function"="blue", "environment"="red"))
 plot(gb)
 
 # fungi
 gf <- ggplot() +
   geom_point(data=f_data.scores, aes(x=NMDS1, y=NMDS2, fill=Landuse, shape=Site),size=4) +
+  scale_fill_manual(name = "Landuse", values=c("Farm"="orange", "Natural"="green"), guide = guide_legend(override.aes = list(shape=21))) +
   scale_shape_manual(values = c("D"=21, "E"=22, "F"=23, "G"=24, "H"=25)) +
-  scale_fill_manual(values=c("Farm"="orange", "Natural"="green")) +
   theme_bw() +
   theme(panel.border = element_rect(size = 1.2, colour = "black"),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
-        legend.position = "none",
+        legend.position = "right",
+        legend.title = element_text(size = 15, face = "bold", colour = "black"),
+        legend.text = element_text(size = 15, face = "bold", colour = "black"),
         plot.title = element_text(size=15, face = "bold", colour = "black"),
         axis.text=element_text(size=10, face = "bold", colour = "black"),
         axis.title=element_text(size=10,face="bold", colour = "black"))+
