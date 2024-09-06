@@ -215,27 +215,49 @@ for (i in varnames_as) {
   
   anno <- as_annotate |> filter(varnames_as == i)
   
-  ifelse(anno$sigs == "n.s.",
-         as_p_fin <- as_p,
-         as_p_fin <- as_p +
+  ## add asterisks when the pair has a significant differences
+  # ifelse(anno$sigs == "n.s.",
+  #        as_p_fin <- as_p,
+  #        as_p_fin <- as_p +
+  #          annotate("text", #dummy
+  #                   x=-Inf,
+  #                   y = (anno$maxs)*1.3,
+  #                   label="",
+  #                   hjust="left",
+  #                   vjust=1,
+  #                   size = 3) +
+  #          geom_signif(
+  #            annotations = anno$sigs,
+  #            y_position=(anno$maxs)*1.25,
+  #            xmin=1.0, 
+  #            xmax=2.0, 
+  #            tip_length=0.01,
+  #            textsize=7,
+  #            size=1,
+  #            color="black"
+  #          )
+  # )
+  
+  ## add asterisks or "n.s." to the pairs
+  as_p_fin <- as_p +
            annotate("text", #dummy
                     x=-Inf,
-                    y = (anno$maxs)*1.3,
+                    y = (anno$maxs)*1.25,
                     label="",
                     hjust="left",
                     vjust=1,
                     size = 3) +
            geom_signif(
              annotations = anno$sigs,
-             y_position=(anno$maxs)*1.25,
-             xmin=1.0, 
-             xmax=2.0, 
+             y_position=(anno$maxs)*1.2,
+             xmin=1.0,
+             xmax=2.0,
              tip_length=0.01,
              textsize=7,
              size=1,
              color="black"
            )
-  )
+  
   as_plots[[i]] <- as_p_fin
 }
 
