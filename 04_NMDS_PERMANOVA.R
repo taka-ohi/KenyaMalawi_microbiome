@@ -159,7 +159,7 @@ b_ef_table_sig <- b_ef_table_sig |>
              factor == "Lignin_breakdown" ~ "Lignolytic",
              factor == "Methane_oxidation" ~ "Methanotroph",
              factor == "Methanogenesis" ~ "Methanogen",
-             factor == "N_fixation" ~ "Nitrogen-fixing",
+             factor == "N_fixation" ~ "N-fixing",
              factor == "Xylan_breakdown" ~ "Xylanolytic",
              factor == "Gravimetric.water.content" ~ "Moisture",
              TRUE ~ factor
@@ -189,8 +189,8 @@ fungititle <- sprintf("Fungi (Stress = %s)", round(f_ord$stress, 2))
 # prokaryotes
 gb <- ggplot() +
   geom_point(data=b_data.scores, aes(x=NMDS1, y=NMDS2, fill=Landuse, shape=Site), size=4) +
-  scale_fill_manual(name = "Landuse", values=c("Farm"="orange", "Natural"="green"), guide = guide_legend(override.aes = list(shape=21))) +
-  scale_shape_manual(name = "Site", values = c("D"=21, "E"=22, "F"=23, "G"=24, "H"=25)) +
+  scale_fill_manual(values=c("Farm"="orange", "Natural"="green"), guide = guide_legend(override.aes = list(shape=21))) +
+  scale_shape_manual(values = c("D"=21, "E"=22, "F"=23, "G"=24, "H"=25)) +
   theme_bw() +
   theme(panel.border = element_rect(size = 1.2, colour = "black"),
         panel.grid.major = element_blank(),
@@ -202,7 +202,7 @@ gb <- ggplot() +
         plot.title = element_text(size=15, face = "bold", colour = "black"),
         axis.text=element_text(size=10, face = "bold", colour = "black"),
         axis.title=element_text(size=10,face="bold", colour = "black"))+
-  labs(title = proktitle) +
+  labs(title = proktitle, fill = "Land use", shape = "Site") +
   scale_y_continuous(labels = scaleFUN) +
   scale_x_continuous(labels = scaleFUN)+
   annotate("text", x=min(b_data.scores$NMDS1), y=-b_yRoof*0.95,
@@ -219,7 +219,7 @@ plot(gb)
 # fungi
 gf <- ggplot() +
   geom_point(data=f_data.scores, aes(x=NMDS1, y=NMDS2, fill=Landuse, shape=Site),size=4) +
-  scale_fill_manual(name = "Landuse", values=c("Farm"="orange", "Natural"="green"), guide = guide_legend(override.aes = list(shape=21))) +
+  scale_fill_manual(values=c("Farm"="orange", "Natural"="green"), guide = guide_legend(override.aes = list(shape=21))) +
   scale_shape_manual(values = c("D"=21, "E"=22, "F"=23, "G"=24, "H"=25)) +
   theme_bw() +
   theme(panel.border = element_rect(size = 1.2, colour = "black"),
@@ -232,7 +232,7 @@ gf <- ggplot() +
         plot.title = element_text(size=15, face = "bold", colour = "black"),
         axis.text=element_text(size=10, face = "bold", colour = "black"),
         axis.title=element_text(size=10,face="bold", colour = "black"))+
-  labs(title = fungititle)+
+  labs(title = proktitle, fill = "Land use", shape = "Site") +
   scale_y_continuous(labels = scaleFUN2) +
   scale_x_continuous(labels = scaleFUN2)+
   annotate("text", x=min(f_data.scores$NMDS1), y=-f_yRoof*0.95,

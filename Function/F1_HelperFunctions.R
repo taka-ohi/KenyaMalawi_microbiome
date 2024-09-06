@@ -5,6 +5,13 @@
 #### 2024.06.25 Ohigashi
 #### 
 
+### required packages
+library(dplyr); packageVersion("dplyr")
+library(agricolae); packageVersion("agricolae")
+library(vegan); packageVersion("vegan")
+
+
+
 ### function performing 2way ANOVA for multiple variavles
 Do2wayANOVA <- function(data, factor1, factor2, showingstyle = "pval", transformation = "sqrt", log_offset = 1, start_col = 1, end_col = ncol(data)) {
   factor1_col <- data[[factor1]]
@@ -80,6 +87,8 @@ Do2wayANOVA <- function(data, factor1, factor2, showingstyle = "pval", transform
   row.names(p_summary_res_df) <- row_names
   return(p_summary_res_df)
 }
+
+
 
 ### function performing 2way ANOVA succeeding to a table (gtsummary)
 Do2wayANOVA_table <- function(data, factor1, factor2, transformation = "sqrt", log_offset = 1, start_col = 1, end_col = ncol(data)) {
@@ -212,6 +221,82 @@ DoTukeyTest <- function(data, factor1, factor2=NULL, transformation = "sqrt", lo
   
   return(results)
 }
+
+
+
+### function performing t-test for multiple variables
+DoTTest <- function(data, factor, showingstyle = "pval", transformation = "sqrt", log_offset = 1, start_col = 1, end_col = ncol(data)) {
+  factor_col <- data[[factor]]
+  
+  # Create a 1x(ncol(data) - start_col + 1) matrix with initial values of 0
+  p_summary <- matrix(rep(0, 1 * (end_col - start_col + 1)), nrow = 1)
+  
+  # Set row names and column names for the matrix
+  row.names(p_summary) <- factor
+  colnames(p_summary) <- colnames(data)[start_col:end_col]
+  
+  for (i in start_col:end_col) {
+    current_data <- data[, c(i, which(colnames(data) %in% factor))]
+    
+    # Split data by the factor
+    group_data <- split(current_data, factor_col)
+    
+    # Determine if any group fails the normality test
+    normal <- TRUE
+    for (group in group_data) {
+      if (shapiro.test(group[[1]])$p.value < 0.05) {
+        normal <- FALSE
+        break
+      }
+    }
+    
+    # Apply transformation if any group is not normal
+    if (!normal) {
+      if (transformation == "log") {
+        if (min(na.omit(data[, i])) + log_offset <= 0) {
+          stop("Data contains values that will result in non-positive values after adding the log offset, which are not suitable for log transformation.")
+        }
+        data[, i] <- log(data[, i] + log_offset)
+      } else if (transformation == "sqrt") {
+        if (min(na.omit(data[, i])) < 0) {
+          data[, i] <- sqrt(data[, i] - min(na.omit(data[, i])))
+        } else {
+          data[, i] <- sqrt(data[, i])
+        }
+      } else {
+        stop("Invalid transformation type. Use 'sqrt' or 'log'.")
+      }
+    }
+    
+    # Perform t-test
+    ttest_result <- t.test(data[, i] ~ factor_col)
+    
+    # Store the p-value in the corresponding column
+    p_summary[1, colnames(data)[i]] <- ttest_result$p.value
+  }
+  
+  # Format and return results based on the specified style
+  p_summary_res_df <- if (showingstyle == "pval") {
+    as.data.frame(lapply(as.data.frame(p_summary), function(x) {
+      ifelse(x < 0.001, "p < 0.001",
+             ifelse(x < 0.01, "p < 0.01",
+                    ifelse(x < 0.05, "p < 0.05", "n.s.")))
+    }))
+  } else if (showingstyle == "asterisk") {
+    as.data.frame(lapply(as.data.frame(p_summary), function(x) {
+      ifelse(x < 0.001, "***",
+             ifelse(x < 0.01, "**",
+                    ifelse(x < 0.05, "*", "n.s.")))
+    }))
+  } else {
+    stop("Invalid showing style. Use 'pval' or 'asterisk'.")
+  }
+  
+  row.names(p_summary_res_df) <- factor
+  return(p_summary_res_df)
+}
+
+
 
 
 ### function calculating distance to centroids by the group

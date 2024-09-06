@@ -13,9 +13,9 @@ source("Function/F2_HelperFunctions_for_Visualization.R")
 
 
 ### load data (created in 04_NMDS_PERMANOVA.R)
-# plot data
 nmds_prok <- readRDS("04_NMDS_PERMANOVA_out/NMDS_plot_prok.obj")
 nmds_fungi <- readRDS("04_NMDS_PERMANOVA_out/NMDS_plot_fungi.obj")
+
 
 # extract legend data
 nmds_legend <- get_legend(nmds_prok) # just used prokaryotes one (fungi one is also fine)
@@ -29,19 +29,21 @@ fig1_all <- plot_grid(nmds_prok + theme(legend.position = "none",
                       nmds_legend,
                       ncol = 3,
                       rel_widths = c(1, 1, 0.4),
-                      labels = c("a", "b", NA)
+                      labels = c("a", "b", NA),
+                      label_size = 16
                       )
 
 # create a directory
-dir.create("FigCode/Fig1_out")
+dir.create("FigCode/FigM_NMDS_out")
 
 # save PDF
-cairo_pdf("FigCode/Fig1_out/Fig1_NMDS.pdf", width = 13.2, height = 5.5)
+cairo_pdf("FigCode/FigM_NMDS_out/FigM_NMDS.pdf", width = 14.4, height = 6)
 print(fig1_all)
 dev.off()
 
 # save png
-ggsave(filename = "FigCode/Fig1_out/Fig1_NMDS.png", plot = fig1_all, width = 13.2, height = 5.5)
+ggsave(filename = "FigCode/FigM_NMDS_out/FigM_NMDS.png",
+       plot = fig1_all, width = 14.4, height = 6, bg = "white")
 
 
 ### save session info
@@ -49,5 +51,5 @@ ggsave(filename = "FigCode/Fig1_out/Fig1_NMDS.png", plot = fig1_all, width = 13.
 dir.create("FigCode/Fig_SessionInfo")
 writeLines(capture.output(sessionInfo()),
            # please change 0X or XX below to the script number you used.
-           sprintf("FigCode/Fig_SessionInfo/Fig1_SessionInfo_%s.txt", substr(Sys.time(), 1, 10)))
+           sprintf("FigCode/Fig_SessionInfo/FigM_NMDS_SessionInfo_%s.txt", substr(Sys.time(), 1, 10)))
 
