@@ -1,0 +1,3 @@
+
+cd ~/Desktop/analysis/Database/FAPROTAX_1.2.10/
+python collapse_table.py -i ~/Desktop/analysis/R_kenmal/KenyaMalawi_microbiome/00_1_check_chao/otu_table.tsv -o ~/Desktop/analysis/R_kenmal/KenyaMalawi_microbiome/00_1_check_chao/functional_table.tsv -g FAPROTAX.txt -c "#" -d "taxonomy" --omit_columns 0 --column_names_are_in last_comment_line -r ~/Desktop/analysis/R_kenmal/KenyaMalawi_microbiome/00_1_check_chao/report.txt -n columns_after_collapsing -v

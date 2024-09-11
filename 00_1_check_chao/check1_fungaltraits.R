@@ -72,8 +72,3 @@ write.table(agr_fungaltrait, file = "00_1_check_chao/FungalTraits_primarilifesty
 write.table(functable, file = "00_1_check_chao/FungalTraits_specific_functions.txt", row.names = F, quote = F, sep = "\t")
 
 
-### save session info
-writeLines(capture.output(sessionInfo()),
-           # please change 0X or XX below to the script number you used.
-           sprintf("00_SessionInfo/02_4_SessionInfo_%s.txt", substr(Sys.time(), 1, 10))) 
-

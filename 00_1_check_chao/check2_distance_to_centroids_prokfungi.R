@@ -29,6 +29,9 @@ fungilife <- read.table("00_1_check_chao/FungalTraits_primarilifestyle_aggregate
 fungilife <- fungilife |> column_to_rownames(var = "primary_lifestyle")
 fungilife.t <- t(fungilife)
 
+# try w/o "unassigned"
+fungilife.t <- fungilife.t[,1:(ncol(fungilife.t)-1)]
+
 
 
 ### calculate distance to centroids of taxa, functions, and environments for "across-site" scale (just by land use)
