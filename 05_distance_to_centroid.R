@@ -2,6 +2,7 @@
 #### R script for Ohigashi et al (2024)
 #### Calculate distance to centroids for ...
 #### 2024.07.04 written by Ohigashi
+#### 2024.09.11 edited by Ohigashi to remove "unassigned" fungal lifestyles
 #### R 4.3.3
 #### 
 
@@ -51,6 +52,7 @@ n_cycle.t <- t(n_cycle)
 
 # fungal lifestyles
 fungilife <- read.table("02_Function_analysis_out/FungalTraits_primarilifestyle_percent.txt", header = T)
+fungilife <- fungilife |> filter(primary_lifestyle != "unassigned") # 2024.09.11
 fungilife <- fungilife |> column_to_rownames(var = "primary_lifestyle")
 fungilife.t <- t(fungilife)
 
