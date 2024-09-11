@@ -2,6 +2,7 @@
 #### R script for Ohigashi et al (2024)
 #### Partitioning dissimilarity of perokaryotic and gungal communities
 #### 2024.07.10 written by Ohigashi
+#### 2024.09.11 edited by Ohigashi to add statistics
 #### R 4.3.3
 ####
 
@@ -103,10 +104,120 @@ fungi.S.3_df <- fungi.S.3_df |>
   ungroup()
 
 
+### statistics for dissimilarity and its components (replacement and richness differences) added on 2024.09.11
+## preparation
+# load data
+prok.S.3_df <- read.table("08_partitioning_dissimilarity_out/paritionied_dissimilarity_prok.txt", header = T, sep = "\t")
+fungi.S.3_df <- read.table("08_partitioning_dissimilarity_out/paritionied_dissimilarity_fungi.txt", header = T, sep = "\t")
+
+
+### looping for permutation test
+scale_cat <- c("within_site", "diff_site_within_country", "diff_site_diff_country")
+
+# prokaryotes
+perm_pvals_prok <- list()
+for (i in scale_cat){
+  # subset by scale
+  subdf <- prok.S.3_df |>
+    filter(relation == i, !landuse %in% c("Natural_Farm", "Farm_Natural")) |>
+    mutate(Dissim = 1-Similarity) |> # put dissimilarity column
+    select(Dissim, Repl, RichDiff, landuse)
+  
+  # get difference of mean values between landuse pairs (observed data)
+  subdf_mean <- subdf |>
+    group_by(landuse) |>
+    summarise(across(c(Dissim, Repl, RichDiff), mean, na.rm = TRUE))
+  obs_difmean_dissim <- subdf_mean$Dissim[subdf_mean$landuse == "Farm_Farm"] - subdf_mean$Dissim[subdf_mean$landuse == "Natural_Natural"]
+  obs_difmean_repl <- subdf_mean$Repl[subdf_mean$landuse == "Farm_Farm"] - subdf_mean$Repl[subdf_mean$landuse == "Natural_Natural"]
+  obs_difmean_rich <- subdf_mean$RichDiff[subdf_mean$landuse == "Farm_Farm"] - subdf_mean$RichDiff[subdf_mean$landuse == "Natural_Natural"]
+  
+  
+  # permute and get difference of mean values for each variable
+  varnames <- names(subdf)[1:3]
+  perm_diffs <- list()
+  set.seed(123)
+  for (j in varnames) {
+    perm_diff <- replicate(999999, {
+      shuffled <- sample(subdf[[j]])
+      mean(shuffled[1:(length(shuffled)/2)]) - 
+      mean(shuffled[(length(shuffled)/2 + 1):length(shuffled)])
+    })
+    perm_diffs[[j]] <- perm_diff
+  }
+  
+  # calculate p-values
+  p.dissim <- mean(abs(perm_diffs[["Dissim"]]) >= abs(obs_difmean_dissim))
+  p.repl <- mean(abs(perm_diffs[["Repl"]]) >= abs(obs_difmean_repl))
+  p.rich <- mean(abs(perm_diffs[["RichDiff"]]) >= abs(obs_difmean_rich))
+  
+  # make a table
+  perm_pvals_prok[[i]] <- data.frame(p.dissim = p.dissim,
+                                     p.repl = p.repl,
+                                     p.rich = p.rich,
+                                     row.names = sprintf("%s_NN_vs_FF", i)
+                                     )
+}
+
+
+
+# fungi
+perm_pvals_fungi <- list()
+for (i in scale_cat){
+  # subset by scale
+  subdf <- fungi.S.3_df |>
+    filter(relation == i, !landuse %in% c("Natural_Farm", "Farm_Natural")) |>
+    mutate(Dissim = 1-Similarity) |> # put dissimilarity column
+    select(Dissim, Repl, RichDiff, landuse)
+  
+  # get difference of mean values between landuse pairs (observed data)
+  subdf_mean <- subdf |>
+    group_by(landuse) |>
+    summarise(across(c(Dissim, Repl, RichDiff), mean, na.rm = TRUE))
+  obs_difmean_dissim <- subdf_mean$Dissim[subdf_mean$landuse == "Farm_Farm"] - subdf_mean$Dissim[subdf_mean$landuse == "Natural_Natural"]
+  obs_difmean_repl <- subdf_mean$Repl[subdf_mean$landuse == "Farm_Farm"] - subdf_mean$Repl[subdf_mean$landuse == "Natural_Natural"]
+  obs_difmean_rich <- subdf_mean$RichDiff[subdf_mean$landuse == "Farm_Farm"] - subdf_mean$RichDiff[subdf_mean$landuse == "Natural_Natural"]
+  
+  
+  # permute and get difference of mean values for each variable
+  varnames <- names(subdf)[1:3]
+  perm_diffs <- list()
+  set.seed(123)
+  for (j in varnames) {
+    perm_diff <- replicate(999999, {
+      shuffled <- sample(subdf[[j]])
+      mean(shuffled[1:(length(shuffled)/2)]) - 
+        mean(shuffled[(length(shuffled)/2 + 1):length(shuffled)])
+    })
+    perm_diffs[[j]] <- perm_diff
+  }
+  
+  # calculate p-values
+  p.dissim <- mean(abs(perm_diffs[["Dissim"]]) >= abs(obs_difmean_dissim))
+  p.repl <- mean(abs(perm_diffs[["Repl"]]) >= abs(obs_difmean_repl))
+  p.rich <- mean(abs(perm_diffs[["RichDiff"]]) >= abs(obs_difmean_rich))
+  
+  # make a table
+  perm_pvals_fungi[[i]] <- data.frame(p.dissim = p.dissim,
+                                     p.repl = p.repl,
+                                     p.rich = p.rich,
+                                     row.names = sprintf("%s_NN_vs_FF", i)
+  )
+}
+
+# create tables
+perm_pvals_prok.tbl <- rbind(perm_pvals_prok[[1]], perm_pvals_prok[[2]], perm_pvals_prok[[3]])
+perm_pvals_fungi.tbl <- rbind(perm_pvals_fungi[[1]], perm_pvals_fungi[[2]], perm_pvals_fungi[[3]])
+
+
 ### save data
 dir.create("08_partitioning_dissimilarity_out")
+
+# data
 write.table(prok.S.3_df, "08_partitioning_dissimilarity_out/paritionied_dissimilarity_prok.txt", row.names = F, quote = F, sep = "\t")
 write.table(fungi.S.3_df, "08_partitioning_dissimilarity_out/paritionied_dissimilarity_fungi.txt", row.names = F, quote = F, sep = "\t")
+# p values
+write.table(perm_pvals_prok.tbl, "08_partitioning_dissimilarity_out/part_dissim_permpval_prok.txt", row.names = T, quote = F, sep = "\t")
+write.table(perm_pvals_fungi.tbl, "08_partitioning_dissimilarity_out/part_dissim_permpval_fungi.txt", row.names = T, quote = F, sep = "\t")
 
 
 ### save session info
