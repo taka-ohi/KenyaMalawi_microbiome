@@ -1,4 +1,4 @@
 p.dissim	p.repl	p.rich
-within_site_NN_vs_FF	0	0.00556500556500557	9.4000094000094e-05
-diff_site_within_country_NN_vs_FF	0	0	0.000584000584000584
-diff_site_diff_country_NN_vs_FF	0	0.00124600124600125	0
+within_site_NN_vs_FF	0	0.00544005440054401	0.000110001100011
+diff_site_within_country_NN_vs_FF	0	0	0.000570005700057001
+diff_site_diff_country_NN_vs_FF	0	0.001280012800128	0

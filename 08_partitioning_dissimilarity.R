@@ -9,6 +9,7 @@
 
 ### load packages
 library(adespatial); packageVersion("adespatial")
+library(dplyr); packageVersion("dplyr")
 
 
 ### load data
@@ -137,10 +138,13 @@ for (i in scale_cat){
   perm_diffs <- list()
   set.seed(123)
   for (j in varnames) {
-    perm_diff <- replicate(999999, {
-      shuffled <- sample(subdf[[j]])
-      mean(shuffled[1:(length(shuffled)/2)]) - 
-      mean(shuffled[(length(shuffled)/2 + 1):length(shuffled)])
+    perm_diff <- replicate(99999, {
+      data <- subdf[[j]]
+      index <- sample(1:length(data), length(data)/2)
+      index_c <- (1:length(data))[-index]
+      shuffled1 <- data[index]
+      shuffled2 <- data[index_c]
+      mean(shuffled1) - mean(shuffled2)
     })
     perm_diffs[[j]] <- perm_diff
   }
@@ -183,10 +187,13 @@ for (i in scale_cat){
   perm_diffs <- list()
   set.seed(123)
   for (j in varnames) {
-    perm_diff <- replicate(999999, {
-      shuffled <- sample(subdf[[j]])
-      mean(shuffled[1:(length(shuffled)/2)]) - 
-        mean(shuffled[(length(shuffled)/2 + 1):length(shuffled)])
+    perm_diff <- replicate(99999, {
+      data <- subdf[[j]]
+      index <- sample(1:length(data), length(data)/2)
+      index_c <- (1:length(data))[-index]
+      shuffled1 <- data[index]
+      shuffled2 <- data[index_c]
+      mean(shuffled1) - mean(shuffled2)
     })
     perm_diffs[[j]] <- perm_diff
   }
