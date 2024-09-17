@@ -8,6 +8,7 @@
 
 ### load packages and functions
 library(dplyr); packageVersion("dplyr")
+library(tibble); packageVersion("tibble")
 library(ggplot2); packageVersion("ggplot2")
 library(ggExtra); packageVersion("ggExtra")
 library(cowplot); packageVersion("cowplot")
@@ -289,7 +290,7 @@ as_test <- ggplot(as.cat_df,
         legend.title = element_text(size = 13, face = "bold", colour = "black"),
         legend.text = element_text(size = 13, face = "bold", colour = "black"),
         plot.title = element_text(hjust = 0.5, face = "bold", colour = "black"),
-        legend.position = "right", # to do marginal plot, do not set legend here
+        legend.position = "right",
         # legend.direction = "horizontal",
         # legend.box = "vertical",
         panel.grid.major = element_blank(),
@@ -360,6 +361,9 @@ dev.off()
 # save png
 ggsave(filename = "FigCode/FigM_correlation_btw_heterogeneity_out/FigM_correlation_btw_heterogeneity.png",
        plot = fig_all, width = 18, height = 12, bg = "white")
+
+# save legend for across-site (because it was mendokusai to get it separately)
+saveRDS(as_legend, "FigCode/FigM_correlation_btw_heterogeneity_out/FigM_cor_across_legend.obj")
 
 
 ### save session info
