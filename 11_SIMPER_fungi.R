@@ -87,13 +87,78 @@ summed_sim_life <- sim_signif_lifestyle |>
 summed_sim_life <- summed_sim_life |>
   mutate(log2FC = log2((total_ave_relabun_farm+1e-4)/(total_ave_relabun_nat+1e-4)))
 
-# categorize lifestyles by significance (contribution > 1% & over 1-fold change)
+# categorize lifestyles by significance (contribution > 1% & over 2-fold change) # changed 1-fold to 2-fold on 2024.09.13
 summed_sim_life <- summed_sim_life |>
   mutate(significant = case_when(
-    total_ave_contrib_percent > 1 & log2FC > 0.5 ~ "Farm",
-    total_ave_contrib_percent > 1 & log2FC < -0.5 ~ "Natural",
+    total_ave_contrib_percent > 1 & log2FC > 1 ~ "Farm",
+    total_ave_contrib_percent > 1 & log2FC < -1 ~ "Natural",
     TRUE ~ "Not significant"
   ))
+
+
+### SIMPER analysis for each site (added on 2024.09.13)
+site <- unique(DESIGN$Site)
+site_simper_res <- list()
+
+# looping for SIMPER
+for (i in site) {
+  set.seed(123)
+  # subset by site
+  f_percent.t.df <- as.data.frame(f_percent.t)
+  f_percent.t.df <- f_percent.t.df |> mutate(Site = DESIGN$Site)
+  subdf <- f_percent.t.df |>
+    filter(Site == i) |>
+    select(-Site)
+  subDESIGN <- DESIGN |> filter(Site == i)
+  
+  # simper
+  sim_fungi <- with(subDESIGN, simper(subdf, Landuse, permutations = 999))
+  sim_fungi_summary <- summary(sim_fungi)
+  sim_fungi_summary <- sim_fungi_summary$Natural_Farm
+  
+  # pick up ASVs whose contriburtion to the difference in land uses
+  sim_fungi_signif <- sim_fungi_summary |>
+    dplyr::filter(p < 0.05)
+  sim_fungi_signif <- sim_fungi_signif |>
+    rownames_to_column(var = "ASV") # make ASV column
+  
+  
+  ## summarize SIMPER result by fungal lifestyle
+  # combine simper result and fungal lifestyles
+  sim_signif_lifestyle <- merge(sim_fungi_signif, lifestyle_list, by = "ASV", sort = F, all.x = T)
+  
+  # convert NA to "undetermined" in lifestyle
+  sim_signif_lifestyle <- sim_signif_lifestyle |>
+    mutate(primary_lifestyle = ifelse(is.na(primary_lifestyle), "unassigned", primary_lifestyle))
+  
+  # remove ASVs whose contribution = 0
+  sim_signif_lifestyle <- sim_signif_lifestyle |>
+    dplyr::filter(average != 0)
+  
+  # sum by primary lifestyle
+  summed_sim_life <- sim_signif_lifestyle |>
+    group_by(primary_lifestyle) |>
+    summarise(
+      total_ave_contrib_percent = sum(average, na.rm = TRUE) * 100,
+      total_ave_relabun_nat = sum(ava, na.rm = TRUE),
+      total_ave_relabun_farm = sum(avb, na.rm = TRUE)
+    )
+  
+  # calculate log2 fold change from natural to farm
+  summed_sim_life <- summed_sim_life |>
+    mutate(log2FC = log2((total_ave_relabun_farm+1e-4)/(total_ave_relabun_nat+1e-4)))
+  
+  # categorize lifestyles by significance (contribution > 1% & over 2-fold change) # changed 1-fold to 2-fold on 2024.09.13
+  summed_sim_life <- summed_sim_life |>
+    mutate(significant = case_when(
+      total_ave_contrib_percent > 1 & log2FC > 1 ~ "Farm",
+      total_ave_contrib_percent > 1 & log2FC < -1 ~ "Natural",
+      TRUE ~ "Not significant"
+    ))
+  site_simper_res[[i]] <- summed_sim_life
+}
+
+
 
 
 ### save data
@@ -101,6 +166,12 @@ dir.create("11_SIMPER_out")
 write.table(sim_fungi_summary, "11_SIMPER_out/simper_allASV.txt", row.names = T, quote = F, sep = "\t")
 write.table(sim_signif_lifestyle, "11_SIMPER_out/simper_signif_lifestyle.txt", row.names = F, quote = F, sep = "\t")
 write.table(summed_sim_life, "11_SIMPER_out/simper_aggregated_signif_lifestyle.txt", row.names = F, quote = F, sep = "\t")
+
+# for each site
+for (i in site) {
+  write.table(site_simper_res[[i]], sprintf("11_SIMPER_out/simper_aggregated_signif_lifestyle_site%s.txt", i)
+              , row.names = F, quote = F, sep = "\t")
+}
 
 
 ### save session info
