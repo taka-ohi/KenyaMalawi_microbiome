@@ -135,7 +135,7 @@ as_g <- ggplot(as_fungi, aes(x = fungitaxa_across, y = Pathotroph, color = Landu
         axis.title = element_text(size = 12, color = "black"),
         legend.title = element_text(size = 12, face = "bold", colour = "black"),
         legend.text = element_text(size = 12, face = "bold", colour = "black"),
-        plot.title = element_text(size = 12, hjust = 0.5, face = "bold", colour = "black"),
+        plot.title = element_text(size = 11, hjust = 0.5, face = "bold", colour = "black"),
         legend.position = "none", # to do marginal plot, do not set legend here
         # legend.direction = "horizontal",
         # legend.box = "vertical",
