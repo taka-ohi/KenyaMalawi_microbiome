@@ -232,7 +232,7 @@ gf <- ggplot() +
         plot.title = element_text(size=15, face = "bold", colour = "black"),
         axis.text=element_text(size=10, face = "bold", colour = "black"),
         axis.title=element_text(size=10,face="bold", colour = "black"))+
-  labs(title = proktitle, fill = "Land use", shape = "Site") +
+  labs(title = fungititle, fill = "Land use", shape = "Site") +
   scale_y_continuous(labels = scaleFUN2) +
   scale_x_continuous(labels = scaleFUN2)+
   annotate("text", x=min(f_data.scores$NMDS1), y=-f_yRoof*0.95,
