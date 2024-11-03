@@ -9,7 +9,6 @@
 ### load package
 library(dplyr); packageVersion("dplyr")
 library(reshape2); packageVersion("reshape2")
-library(ggplot2); packageVersion("ggplot2")
 
 
 ### load data
