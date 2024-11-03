@@ -246,7 +246,7 @@ for (i in 1:10){
           axis.title = element_text(size = 12, color = "black"),
           legend.title = element_text(size = 13, face = "bold", colour = "black"),
           legend.text = element_text(size = 13, face = "bold", colour = "black"),
-          plot.title = element_text(hjust = 0.5, face = "bold", colour = "black"),
+          plot.title = element_text(size = 12, hjust = 0.5, face = "bold", colour = "black"),
           legend.position = "none", # to do marginal plot, do not set legend here
           # legend.direction = "horizontal",
           # legend.box = "vertical",
