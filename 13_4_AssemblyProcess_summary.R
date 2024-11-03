@@ -140,6 +140,6 @@ w.bNTI.RCbray_ITS <- w.bNTI.RCbray_ITS |>
 
 
 ### save data
-write.csv(w.bNTI.RCbray_16S, "13_AssemblyProcess_out/summary_bNTI_RCbray_prok.csv")
-write.csv(w.bNTI.RCbray_ITS, "13_AssemblyProcess_out/summary_bNTI_RCbray_fungi.csv")
+write.csv(w.bNTI.RCbray_16S, "13_AssemblyProcess_out/summary_bNTI_RCbray_prok.csv", row.names = F, quote = F)
+write.csv(w.bNTI.RCbray_ITS, "13_AssemblyProcess_out/summary_bNTI_RCbray_fungi.csv", row.names = F, quote = F)
 
