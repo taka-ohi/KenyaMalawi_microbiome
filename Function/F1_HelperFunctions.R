@@ -344,3 +344,12 @@ dms_to_deg <- function(dms_string) {
   return(deg)
 }
 
+
+
+### function for merging > 2 data frames
+merge2 <- function(dfs, ...) { 
+  base <- dfs[1]
+  lapply(dfs[-1], function(i) base <<- merge(base, i, ...))
+  return(base)
+}
+
