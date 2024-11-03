@@ -110,7 +110,7 @@ fungi_p <- ggplot(fungidf, aes(x = dist.class, y = Mantel.cor,
   scale_y_continuous(labels = scaleFUN) +
   theme_classic() +
   theme(
-    plot.title = element_text(size = 12, face = "bold", colour = "black", hjust = 0.5),
+    plot.title = element_text(face = "bold", colour = "black", hjust = 0.5),
     axis.text = element_text(size = 12, color = "black"),
     axis.title = element_text(size = 12, color = "black"),
     legend.title = element_text(size = 12, face = "bold", colour = "black"),
