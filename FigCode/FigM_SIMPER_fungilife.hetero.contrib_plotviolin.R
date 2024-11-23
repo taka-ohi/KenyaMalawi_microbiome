@@ -20,7 +20,12 @@ source("Function/F2_HelperFunctions_for_Visualization.R")
 ave_dfs <- readRDS("11_SIMPER_out/ASV_ave.contrib_eachscale.obj")
 
 # p-values obtained by permutation test
-perm_p_df <- read.csv("11_SIMPER_out/lifestyle_contrib_pvals_comparing_landuse_mean.csv", header = T)
+perm_p_df <- read.csv("11_SIMPER_out/lifestyle_contrib_pvals.adj_comparing_landuse_mean.csv", header = T) # with adjusted p-values
+# adopt adjusted p values so delete original p-values
+delete_cols <- names(perm_p_df)[2:9]
+perm_p_df <- perm_p_df |>
+  select(-all_of(delete_cols))
+colnames(perm_p_df)[2:9] <- delete_cols # name it as original
 
 
 ### format data
@@ -76,33 +81,6 @@ perm_p_df <- perm_p_df |>
   mutate(across(-1, changep0.v))
 
 
-### Wilcoxon Mann Whitney test <- will use only permutation result
-# make a data frame to store p-values (containing same column names as permutation test one)
-# u_p_df <- perm_p_df
-# u_p_df[, 2:9] <- NA # reset it
-# 
-# # put W-M-W test p-values into the data frame
-# for (dfname in names(plotdfs)) {
-#   df <- plotdfs[[dfname]]
-#   for (ls in u_p_df$primary_lifestyle) {
-#     lifedf <- df |> filter(primary_lifestyle == ls)
-#     wmw_res <- wilcox.test(mean_contrib ~ group, data = lifedf)
-#     u_p <- wmw_res$p.value
-#     if (dfname == "as_ac") {
-#       u_p_df$as_ac[u_p_df$primary_lifestyle == ls] <- u_p
-#     } else if (grepl("^within_[A-Z]$", dfname)) {
-#       tar_col <- sub("within_", "ws", dfname)
-#       u_p_df[[tar_col]][u_p_df$primary_lifestyle == ls] <- u_p
-#     } else if (grepl("^within_[A-Z]+", dfname)) {
-#       tar_col <- sub("within_", "w", dfname)
-#       u_p_df[[tar_col]][u_p_df$primary_lifestyle == ls] <- u_p
-#     }
-#   }
-# }
-# 
-# # chnage p-values to asterisks
-# u_p_df <- u_p_df |>
-#   mutate(across(-1, changep0.v))
 
 ### create plots for each scale type
 # pick up lifestyles to be plotted
@@ -117,7 +95,6 @@ colnames(plot_perm_p)[2:ncol(plot_perm_p)] <- names(plotdfs) # name as data fram
 
 # looping to create plots
 plots <- list()
-# l <- names(plotdfs)[1]
 for (l in names(plotdfs)) {
   # get data set
   plotdf <- plotdfs[[l]]

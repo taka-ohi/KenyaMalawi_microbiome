@@ -2,6 +2,7 @@
 #### R script for Ohigashi et al (2024)
 #### Analysis on which ASVs do not contribute to heterogeneity within the group
 #### 2024.09.20 written by Ohigashi
+#### 2024.11.23 edited by Ohigashi
 #### R 4.3.3
 ####
 
@@ -548,6 +549,12 @@ for (ps_df in ps.dfs.f) {
 # calculate p-values by dividing the count by the number of permutation
 perm_p_df2 <- cbind(perm_p[,1, drop = FALSE], perm_p[,-1] / length(ps.dfs.f))
 
+# calculate adjusted p-values (because it was multiple testing) edited on 2024.11.23
+perm_p_df2 <- read.csv("11_SIMPER_out/lifestyle_contrib_pvals_comparing_landuse_mean.csv")
+perm_p_df3 <- perm_p_df2 |>
+  mutate(across(-primary_lifestyle, 
+              .fns = ~ p.adjust(., method = "BH"),
+              .names = "{.col}.adj"))
 
 
 ### save data
@@ -558,6 +565,8 @@ saveRDS(pseudf2, file = "11_SIMPER_out/lifestyle_mean_ave.contrib_pseudo2.obj") 
 # saveRDS(pseudf, file = "11_SIMPER_out/lifestyle_mean_ave.contrib_pseudo.obj") # downloaded from the workstation
 # write.csv(perm_p_df, file = "11_SIMPER_out/lifestyle_contrib_pvals_comparing_landuse_median.csv", quote = F, row.names = F)
 write.csv(perm_p_df2, file = "11_SIMPER_out/lifestyle_contrib_pvals_comparing_landuse_mean.csv", quote = F, row.names = F)
+write.csv(perm_p_df3, file = "11_SIMPER_out/lifestyle_contrib_pvals.adj_comparing_landuse_mean.csv", quote = F, row.names = F)
+
 
 ### save session info
 writeLines(capture.output(sessionInfo()),
