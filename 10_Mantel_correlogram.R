@@ -12,6 +12,7 @@ source("Function/F1_HelperFunctions.R")
 library(dplyr); packageVersion("dplyr")
 library(vegan); packageVersion("vegan")
 library(purrr); packageVersion("purrr")
+library(tibble); packageVersion("tibble")
 # install gfortran (using gfortran-12.2-universal.pkg) following the web site below
 # https://cran.r-project.org/bin/macosx/tools/
 # download SoDA package from the archive (https://cran.r-project.org/src/contrib/Archive/SoDA/)
