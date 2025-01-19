@@ -174,7 +174,7 @@ f_ef_table_sig <- f_ef_table_sig |>
 
 ### making NMDS plots
 # set maximum values to annotate text (significance table)
-b_yRoof <- (max(b_data.scores$NMDS2))
+b_yRoof <- (min(b_data.scores$NMDS2)) #(max(b_data.scores$NMDS2))
 f_yRoof <- (max(f_data.scores$NMDS2))
 
 # set the levels for land use factor
@@ -189,7 +189,7 @@ fungititle <- sprintf("Fungi (Stress = %s)", round(f_ord$stress, 2))
 # prokaryotes
 gb <- ggplot() +
   geom_point(data=b_data.scores, aes(x=NMDS1, y=NMDS2, fill=Landuse, shape=Site), size=4) +
-  scale_fill_manual(values=c("Farm"="orange", "Natural"="green"), guide = guide_legend(override.aes = list(shape=21))) +
+  scale_fill_manual(values=c("Farm"="tan1", "Natural"="darkgreen"), guide = guide_legend(override.aes = list(shape=21))) +
   scale_shape_manual(values = c("D"=21, "E"=22, "F"=23, "G"=24, "H"=25)) +
   theme_bw() +
   theme(panel.border = element_rect(size = 1.2, colour = "black"),
@@ -205,7 +205,7 @@ gb <- ggplot() +
   labs(title = proktitle, fill = "Land use", shape = "Site") +
   scale_y_continuous(labels = scaleFUN) +
   scale_x_continuous(labels = scaleFUN)+
-  annotate("text", x=min(b_data.scores$NMDS1), y=-b_yRoof*0.95,
+  annotate("text", x=min(b_data.scores$NMDS1), y=b_yRoof*0.85,
            label=b_perm_result,
            hjust="left",
            size = 4)+
@@ -213,13 +213,13 @@ gb <- ggplot() +
                size=0.5,arrow=arrow(type = "open", length = unit(0.08, "inches")), show.legend = F) +
   geom_text_repel(data = b_ef_table_sig, aes(x = NMDS1*1.5, y = NMDS2*1.5, label = Guild, color=Type),
                   size = 4, show.legend = F)+
-  scale_color_manual(name = "Type", values = c("function"="blue", "environment"="red"))
+  scale_color_manual(name = "Type", values = c("function"="skyblue", "environment"="red"))
 plot(gb)
 
 # fungi
 gf <- ggplot() +
   geom_point(data=f_data.scores, aes(x=NMDS1, y=NMDS2, fill=Landuse, shape=Site),size=4) +
-  scale_fill_manual(values=c("Farm"="orange", "Natural"="green"), guide = guide_legend(override.aes = list(shape=21))) +
+  scale_fill_manual(values=c("Farm"="tan1", "Natural"="darkgreen"), guide = guide_legend(override.aes = list(shape=21))) +
   scale_shape_manual(values = c("D"=21, "E"=22, "F"=23, "G"=24, "H"=25)) +
   theme_bw() +
   theme(panel.border = element_rect(size = 1.2, colour = "black"),
@@ -243,7 +243,7 @@ gf <- ggplot() +
                size=0.5,arrow=arrow(type = "open", length = unit(0.08, "inches")), show.legend = F) +
   geom_text_repel(data = f_ef_table_sig, aes(x = NMDS1*0.15, y = NMDS2*0.15, label = Guild, colour=Type),
                   size = 4, show.legend = F)+
-  scale_color_manual(values = c("function"="blue", "environment"="red"))
+  scale_color_manual(values = c("function"="skyblue", "environment"="red"))
 plot(gf)
 
 
@@ -293,6 +293,9 @@ png(filename = "04_NMDS_PERMANOVA_out/shepard_fungi.png", width = 500, height = 
 stressplot(f_ord, main = "Shepard plot (Fungi)")
 dev.off()
 
+# save objects needed for plotting
+save(b_ord, f_ord, b_perm, f_perm, b_data.scores, f_data.scores,
+     b_ef_func, f_ef_func, b_ef_env, f_ef_env, file = "04_NMDS_PERMANOVA_out/objects_used.for.plot.RData")
 
 ### save session info
 writeLines(capture.output(sessionInfo()),
