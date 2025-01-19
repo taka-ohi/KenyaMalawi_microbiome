@@ -8,6 +8,7 @@
 ### required packages
 library(dplyr); packageVersion("dplyr")
 library(agricolae); packageVersion("agricolae")
+library(emmeans); packageVersion("emmeans")
 library(vegan); packageVersion("vegan")
 
 
@@ -222,6 +223,66 @@ DoTukeyTest <- function(data, factor1, factor2=NULL, transformation = "sqrt", lo
   return(results)
 }
 
+
+### function performing PAIRWISE Tukey's test using emmeans
+DoTukeyTest_emmeans <- function(data, factor1, factor2=NULL, transformation = "sqrt", log_offset = 1, start_col = 1, end_col = ncol(data)) {
+  # create a data frame for output
+  results <- data.frame()
+  
+  for (i in start_col:end_col) {
+    # Combine the current column with factor columns for splitting by groups
+    current_var <- colnames(data)[i]
+    
+    # Check normality and apply transformation if needed
+    normal <- all(tapply(data[[current_var]], interaction(data[[factor1]], data[[factor2]]), function(group) {
+      if (length(group) > 2) {
+        return(shapiro.test(group)$p.value >= 0.05)
+      } else {
+        return(TRUE) # Skip normality test for small groups
+      }
+    }))
+    
+    # Apply transformation if any group is not normal
+    if (!normal) {
+      if (transformation == "log") {
+        if (any(data[[current_var]] + log_offset <= 0, na.rm = TRUE)) {
+          stop("Data contains values unsuitable for log transformation (non-positive values after offset).")
+        }
+        data[[current_var]] <- log(data[[current_var]] + log_offset)
+      } else if (transformation == "sqrt") {
+        data[[current_var]] <- ifelse(data[[current_var]] < 0, 
+                                      sqrt(data[[current_var]] - min(data[[current_var]], na.rm = TRUE)), 
+                                      sqrt(data[[current_var]]))
+      } else {
+        stop("Invalid transformation type. Use 'sqrt' or 'log'.")
+      }
+    }
+    
+    # Create a formula dynamically
+    formula <- as.formula(paste0(current_var, " ~ ", factor1, if (!is.null(factor2)) paste0("*", factor2)))
+    
+    # Fit the linear model
+    model <- lm(formula, data = data)
+    
+    # Perform pairwise comparisons with emmeans
+    if (!is.null(factor2)) {
+      specs_formula <- eval(parse(text = paste0("pairwise ~ ", factor2, " | ", factor1)))
+    } else {
+      specs_formula <- eval(parse(text = paste0("pairwise ~ ", factor1)))
+    }
+    
+    emm <- emmeans(model, specs = specs_formula)
+    pairwise_summary <- as.data.frame(emm$contrasts)
+    
+    # Add variable name to the results
+    pairwise_summary$Variable <- current_var
+    
+    # Append to the results
+    results <- rbind(results, pairwise_summary)
+  }
+  
+  return(results)
+}
 
 
 ### function performing t-test for multiple variables
