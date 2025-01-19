@@ -1,7 +1,7 @@
 ####
 #### R script for Ohigashi et al (2024)
 #### statistics for environmental data
-#### 2024.06.25 written by Ohigashi
+#### 2024.06.25 written by Ohigashi; 2024.12.20 edited by Ohigashi to change the posthoc test to emmeans
 #### R 4.3.3
 #### README: be sure that "soil_metadata.txt" is in the "Data" directory
 
@@ -31,19 +31,13 @@ env2way_summary <- Do2wayANOVA(data = env,
                                start_col = 5
                                )
 
-# perform Tukey's test (especially for the vars that had interaction between site and land use)
-envTukey <- DoTukeyTest(data = env,
-                        factor1 = "Site",
-                        factor2 = "Landuse",
-                        transformation = "sqrt",
-                        start_col = 5
-                        )
-# reorder the envTukey dataframe
-treat_order <- c("D_Natural", "D_Farm", "E_Natural", "E_Farm", "F_Natural", "F_Farm",
-                 "G_Natural", "G_Farm", "H_Natural", "H_Farm")
-envTukey <- envTukey |>
-  mutate(treat = fct_relevel(treat, treat_order)) |>
-  arrange(treat)
+# perform emmeans test (especially for the vars that had interaction between site and land use)
+env_emmeans <- DoTukeyTest_emmeans(data = env,
+                                factor1 = "Site",
+                                factor2 = "Landuse",
+                                transformation = "sqrt",
+                                start_col = 5
+                                )
 
 
 #### make table
@@ -140,8 +134,8 @@ print(tbl_formatted)
 dir.create("03_summary_envdata_out")
 saveRDS(env2way_summary, file = "03_summary_envdata_out/03_2wayANOVA_envdata.obj")
 write.csv(env2way_summary, file = "03_summary_envdata_out/03_2wayANOVA_envdata.csv", quote = F)
-saveRDS(envTukey, file = "03_summary_envdata_out/03_Tukey_envdata.obj")
-write.csv(envTukey, file = "03_summary_envdata_out/03_Tukey_envdata.csv", quote = F)
+saveRDS(env_emmeans, file = "03_summary_envdata_out/03_Tukey_envdata.obj")
+write.csv(env_emmeans, file = "03_summary_envdata_out/03_Tukey_envdata.csv", quote = F)
 saveRDS(tbl_formatted, file = "03_summary_envdata_out/03_envdata_meansd_table_w_2way.obj")
 tbl_formatted |> 
   gtsave(filename = "03_summary_envdata_out/03_envdata_meansd_table_w_2way.tex")
