@@ -176,7 +176,7 @@ for (i in varnames) {
       x="Site",
       fill="Land use")+
     theme_classic()+
-    scale_fill_manual(values = c("palegreen", "tan1"))+
+    scale_fill_manual(values = c("darkgreen", "tan1"))+
     theme(
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
@@ -243,14 +243,14 @@ as_plots <- list()
 for (i in varnames_as) {
   as_p <- ggplot(as.cat_df, aes_string(x = "Landuse", y = i, fill = "Landuse"
                                        )) +
-    geom_violin(trim = F) +
-    geom_boxplot(width=0.2) +
+    geom_violin(trim = FALSE, position = position_dodge(width = 0.8)) +
+    geom_boxplot(width = 0.15, position = position_dodge(width = 0.8), color = "grey90", alpha = 0.2) +
+    scale_fill_manual(values = c("darkgreen", "tan1")) +
     labs(
       title = plottitles_as[[i]],
       y="Distance to centroids",
       x=NULL)+
     theme_classic()+
-    scale_fill_manual(values = c("palegreen", "tan1"))+
     theme(
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
