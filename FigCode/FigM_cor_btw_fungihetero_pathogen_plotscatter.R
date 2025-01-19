@@ -73,18 +73,20 @@ sig_site <- cor_res.w |>
 
 # plot
 ws_fungi$Landuse <- factor(ws_fungi$Landuse, levels = c("Natural", "Farm"))
-ws_g <- ggplot(ws_fungi, aes(x = fungitaxa_within, y = Pathotroph, color = Site, shape = Landuse)) +
+ws_g <- #ggplot(ws_fungi, aes(x = fungitaxa_within, y = Pathotroph, color = Site, shape = Landuse)) +
+  ggplot(ws_fungi, aes(x = fungitaxa_within, y = Pathotroph, shape = Site, color = Landuse)) +
   geom_point(size=3.5) + 
-  scale_shape_manual(values = c(16, 3))+
+  # scale_shape_manual(values = c(16, 3))+
+  scale_color_manual(values=c("Farm"="tan1", "Natural"="darkgreen"))+
   labs(x = "Distance to centroids of fungal communities",
        y = "Relative abundance of pathotroph (%)",
        color = "Site",
        shape = "Land use",
        title = "Fungal heterogeneity × Pathogenic fungi (within-site)"
   ) + 
-  geom_smooth(data = subset(ws_fungi, Site %in% sig_site),
-              method = "lm", se = FALSE, #inherit.aes = FALSE,
-              aes(group = Site)) +
+  # geom_smooth(data = subset(ws_fungi, Site %in% sig_site),
+  #             method = "lm", se = FALSE, #inherit.aes = FALSE,
+  #             aes(group = Site)) +
   theme_classic()+
   theme(axis.text = element_text(size = 12, color = "black"),
         axis.title = element_text(size = 12, color = "black"),
@@ -123,7 +125,7 @@ cor_anno.a <- sub("-", "\U2212", cor_anno.a)
 as_fungi$Landuse <- factor(as_fungi$Landuse, levels = c("Natural", "Farm"))
 as_g <- ggplot(as_fungi, aes(x = fungitaxa_across, y = Pathotroph, color = Landuse, shape = Site)) +
   geom_point(size=3.5) + 
-  scale_color_manual(values=c("Farm"="tan1", "Natural"="palegreen"))+
+  scale_color_manual(values=c("Farm"="tan1", "Natural"="darkgreen"))+
   labs(x = "Distance to centroids of fungal communities",
        y = "Relative abundance of pathotroph (%)",
        color = "Land use",
