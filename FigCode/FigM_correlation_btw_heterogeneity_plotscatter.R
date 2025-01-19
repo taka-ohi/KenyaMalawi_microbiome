@@ -143,18 +143,19 @@ for (i in 1:10){
   
   # create plot
   ws_g <- ggplot(ws.cat_df,
-                 aes_string(x = ws.pairs$x[i], y = ws.pairs$y[i], color = "Site", shape = "Landuse")) +
+                 # aes_string(x = ws.pairs$x[i], y = ws.pairs$y[i], color = "Site", shape = "Landuse")) +
+                 aes_string(x = ws.pairs$x[i], y = ws.pairs$y[i], shape = "Site", color = "Landuse")) +
     geom_point(size=3.5) + 
-    scale_shape_manual(values = c(16, 3))+
+    scale_color_manual(values=c("Farm"="tan1", "Natural"="darkgreen"))+
     labs(x = x_name,
          y = y_name,
-         color = "Site",
-         shape = "Land use",
+         shape = "Site",
+         color = "Land use",
          title = ws.plottitles[i]
     ) + 
-    geom_smooth(data = subset(ws.cat_df, Site %in% sig_site),
-                method = "lm", se = FALSE, #inherit.aes = FALSE,
-                aes(group = Site)) +
+    # geom_smooth(data = subset(ws.cat_df, Site %in% sig_site),
+    #             method = "lm", se = FALSE, #inherit.aes = FALSE,
+    #             aes(group = Site)) +
     theme_classic()+
     theme(axis.text = element_text(size = 12, color = "black"),
           axis.title = element_text(size = 12, color = "black"),
