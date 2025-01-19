@@ -103,11 +103,6 @@ rbind(FWD.ForwardReads = sapply(FWD.orients, primerHits, fn = fnFs.cut[[1]]),
 # list cutadapted files
 cutFs <- sort(list.files(path.cut, pattern = ".fastq", full.names = TRUE))
 
-# Extract sample names, assuming filenames have format:
-get.sample.name <- function(fname) strsplit(basename(fname), ".fastq")[[1]][1]
-sample.names <- unname(sapply(cutFs, get.sample.name))
-head(sample.names)
-
 # Filter and trim
 filtFs <- file.path(path.cut, "filtered", basename(cutFs)) # set path
 out <- filterAndTrim(cutFs, filtFs, maxN = 0, maxEE = 2,
