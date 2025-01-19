@@ -1,7 +1,7 @@
 ####
 #### R script for Ohigashi et al (2024)
-#### Boxplots for distance to centeroides
-#### 2024.09.04 written by Ohigashi
+#### Boxplots for distance to centroids
+#### 2024.09.04 written by Ohigashi; 2024.12.19 edited by Ohigashi
 #### R 4.3.3
 ####
 
@@ -10,6 +10,7 @@
 library(dplyr); packageVersion("dplyr")
 library(tibble); packageVersion("tibble")
 library(tidyr); packageVersion("tidyr")
+library(reshape2); packageVersion("reshape2")
 library(ggplot2); packageVersion("ggplot2")
 library(ggsignif); packageVersion("ggsignif")
 library(cowplot); packageVersion("cowplot")
@@ -37,8 +38,6 @@ as.cat_df <- merge(envcategory, as_df, by = "Sample", sort = F)
 
 
 ### 1. statistics for each variable
-# (also permutation and Tukey HSD tests were conducted for verification. See "XXXX.R")
-
 ## 1-1. within-site distances
 # two-way ANOVA for within-site distances
 ws_anova <- Do2wayANOVA(data = ws.cat_df,
@@ -48,21 +47,42 @@ ws_anova <- Do2wayANOVA(data = ws.cat_df,
                         transformation = "sqrt",
                         start_col = 5)
 
-# tukey test for within-site distances
-ws_Tukey <- DoTukeyTest(data = ws.cat_df,
-                        factor1 = "Site",
-                        factor2 = "Landuse",
-                        transformation = "sqrt",
-                        start_col = 5
-                        )
+# # tukey test for within-site distances
+# ws_Tukey <- DoTukeyTest_(data = ws.cat_df,
+#                         factor1 = "Site",
+#                         factor2 = "Landuse",
+#                         transformation = "sqrt",
+#                         start_col = 5
+#                         )
+
+# emmeans for within-site distance
+ws_emmeans <- DoTukeyTest_emmeans(
+  data = ws.cat_df,
+  factor1 = "Site",
+  factor2 = "Landuse",
+  transformation = "sqrt",
+  start_col = 5
+)
+
+# add a column for asterisk if the p values < 0.05
+ws_emmeans <- ws_emmeans |>
+  mutate(sig = case_when(
+    p.value < 0.05 ~ "yes",
+    TRUE ~ "no"
+  ))
+
+ws_emmeans.wide <- dcast(ws_emmeans, Site ~ Variable, value.var = "sig")
+
 # create Site and Landuse columns for later use
-ws_Tukey <- ws_Tukey |>
-  separate(treat, into = c("Site", "Landuse"), sep = "_", remove = F)
+# ws_Tukey <- ws_Tukey |>
+#   separate(treat, into = c("Site", "Landuse"), sep = "_", remove = F)
+
 
 # calculation of Q3 for each treatment
 ws.cat_df <- ws.cat_df |> mutate(treat = paste(Site, Landuse, sep = "_"))
 ws.Q3 <- ws.cat_df |>
   group_by(treat) |>
+  # group_by(Site) |>
   summarise(across(proktaxa_within:env_within, ~ {
     Q1 <- quantile(.x, 0.25, na.rm = TRUE)
     Q3 <- quantile(.x, 0.75, na.rm = TRUE)
@@ -75,8 +95,15 @@ ws.Q3 <- ws.cat_df |>
 ws.Q3 <- ws.Q3 |>
   separate(treat, into = c("Site", "Landuse"), sep = "_", remove = F)
 
+# adopt the higher values of the nonoutlier max as Site max
+ws.Q3 <- ws.Q3 |>
+  group_by(Site) |>
+  summarise(across(proktaxa_within.nonout_max:env_within.nonout_max, 
+                   ~ max(., na.rm = TRUE),
+                   .names = "{.col}"))
+
 # combine Tukey and Q3 data
-ws_Tukey.Q3 <- merge(ws_Tukey, ws.Q3, by = c("treat", "Site", "Landuse"), sort = F)
+ws_emmeans.Q3 <- merge(ws_emmeans.wide, ws.Q3, by = c("Site"), sort = F)
 
 
 ## 1-2. across-site distances
@@ -105,16 +132,42 @@ plottitles <- setNames(c("Prokaryotes (within-site)",
 
 # set order for factors
 ws.cat_df$Landuse <- factor(ws.cat_df$Landuse, levels = c("Natural", "Farm"))
-ws_Tukey.Q3$Landuse <- factor(ws_Tukey.Q3$Landuse, levels = c("Natural", "Farm"))
+# ws_Tukey.Q3$Landuse <- factor(ws_Tukey.Q3$Landuse, levels = c("Natural", "Farm"))
 
 # looping to make plot objects
 ws_plots <- list()
 for (i in varnames) {
+  # get two-way result
   twoway_res <- paste0("\n", rownames(ws_anova)[1], ": ", ws_anova[[i]][1],
                        "\n", rownames(ws_anova)[2], ": ", ws_anova[[i]][2],
                        "\n", rownames(ws_anova)[3], ": ", ws_anova[[i]][3]
                        )
+  # get maximum value of y
   yRoof <- max(na.omit(ws.cat_df[[i]]))*1.2
+  # get a table for annotation
+  emm_tbl.tmp <- ws_emmeans.Q3 |>
+    select(Site, !!sym(i), paste(i, "nonout_max", sep = ".")) |>
+    filter(!!sym(i) == "yes") |>
+    mutate(xmin = case_when(
+      Site == "D" ~ 0.8,
+      Site == "E" ~ 1.8,
+      Site == "F" ~ 2.8,
+      Site == "G" ~ 3.8,
+      Site == "H" ~ 4.8,
+      TRUE ~ NA
+    ),
+    xmax = case_when(
+      Site == "D" ~ 1.2,
+      Site == "E" ~ 2.2,
+      Site == "F" ~ 3.2,
+      Site == "G" ~ 4.2,
+      Site == "H" ~ 5.2,
+      TRUE ~ NA
+    )
+    )
+    
+  
+  # plot
   p <- ggplot(ws.cat_df, aes_string(x = "Site", y = i,fill = "Landuse")) +
     geom_boxplot() +
     labs(
@@ -145,16 +198,16 @@ for (i in varnames) {
   ifelse(ws_anova[[i]][3] == "n.s.",
          p_fin <- p,
          p_fin <- p +
-           geom_text(
-             data = ws_Tukey.Q3,
-             mapping = aes_string(x = "Site",
-                                  y = sprintf("%s*1.1", paste(i, "nonout_max", sep = ".")),
-                                  fill = "Landuse",
-                                  label = i
-             ),
+           geom_signif(
+             xmin = emm_tbl.tmp$xmin,
+             xmax = emm_tbl.tmp$xmax,
+             y_position = emm_tbl.tmp[,3]*1.1,
+             annotation = "*",
              position = position_dodge(width = 0.75),
-             fontface = "bold"
+             tip_length = 0.01,
+             textsize = 5
            )
+         
   )
   ws_plots[[i]] <- p_fin
 }
@@ -215,28 +268,6 @@ for (i in varnames_as) {
   
   anno <- as_annotate |> filter(varnames_as == i)
   
-  ## add asterisks when the pair has a significant differences
-  # ifelse(anno$sigs == "n.s.",
-  #        as_p_fin <- as_p,
-  #        as_p_fin <- as_p +
-  #          annotate("text", #dummy
-  #                   x=-Inf,
-  #                   y = (anno$maxs)*1.3,
-  #                   label="",
-  #                   hjust="left",
-  #                   vjust=1,
-  #                   size = 3) +
-  #          geom_signif(
-  #            annotations = anno$sigs,
-  #            y_position=(anno$maxs)*1.25,
-  #            xmin=1.0, 
-  #            xmax=2.0, 
-  #            tip_length=0.01,
-  #            textsize=7,
-  #            size=1,
-  #            color="black"
-  #          )
-  # )
   
   ## add asterisks or "n.s." to the pairs
   as_p_fin <- as_p +

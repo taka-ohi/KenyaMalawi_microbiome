@@ -116,8 +116,8 @@ for (i in 1:10){
     TRUE ~ y_name0
   )
   
-  x_name <- sprintf("Distance to centeroids of %s", x_name_tr)
-  y_name <- sprintf("Distance to centeroids of %s", y_name_tr)
+  x_name <- sprintf("Distance to centroids of %s", x_name_tr)
+  y_name <- sprintf("Distance to centroids of %s", y_name_tr)
   
   # obtain the result of correlation test
   cor_res <- read.csv(sprintf("06_correlation_among_heterogeneity_out/cor_%s_within.csv", ws.pairs$filename[i]))
@@ -214,8 +214,8 @@ for (i in 1:10){
     TRUE ~ y_name0
   )
   
-  x_name <- sprintf("Distance to centeroids of %s", x_name_tr)
-  y_name <- sprintf("Distance to centeroids of %s", y_name_tr)
+  x_name <- sprintf("Distance to centroids of %s", x_name_tr)
+  y_name <- sprintf("Distance to centroids of %s", y_name_tr)
   
   # obtain the result of correlation test
   cor_res <- read.csv(sprintf("06_correlation_among_heterogeneity_out/cor_%s_across.csv", as.pairs$filename[i]))
@@ -234,7 +234,7 @@ for (i in 1:10){
   as_g <- ggplot(as.cat_df,
                  aes_string(x = as.pairs$x[i], y = as.pairs$y[i], color = "Landuse", shape = "Site")) +
     geom_point(size=3.5) + 
-    scale_color_manual(values=c("Farm"="tan1", "Natural"="palegreen"))+
+    scale_color_manual(values=c("Farm"="tan1", "Natural"="darkgreen"))+
     labs(x = x_name,
          y = y_name,
          color = "Land use",
@@ -277,7 +277,7 @@ for (i in 1:10){
 as_test <- ggplot(as.cat_df,
                aes_string(x = "proktaxa_across", y = "prok_cfunc_across", color = "Landuse", shape = "Site")) +
   geom_point(size=3.5) + 
-  scale_color_manual(values=c("Farm"="tan1", "Natural"="palegreen"))+
+  scale_color_manual(values=c("Farm"="tan1", "Natural"="darkgreen"))+
   labs(x = "test",
        y = "test",
        color = "Land use",
