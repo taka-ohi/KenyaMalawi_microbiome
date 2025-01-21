@@ -13,15 +13,15 @@ library(reshape2); packageVersion("reshape2")
 
 ### load data
 # beta NTI (saved as data frame but the shape of distance matrix)
-weighted.bNTI.16S <- read.csv("13_AssemblyProcess_out/weighted_bNTI_16S.csv", row.names = 1)
-weighted.bNTI.ITS <- read.csv("13_AssemblyProcess_out/weighted_bNTI_ITS.csv", row.names = 1)
+weighted.bNTI.16S <- read.csv("08_AssemblyProcess_out/weighted_bNTI_16S.csv", row.names = 1)
+weighted.bNTI.ITS <- read.csv("08_AssemblyProcess_out/weighted_bNTI_ITS.csv", row.names = 1)
 # convert them to dist object
 w.bNTI.16S.d <- as.dist(weighted.bNTI.16S)
 w.bNTI.ITS.d <- as.dist(weighted.bNTI.ITS)
 
 # RCbray (dist object)
-b_rc_res <- readRDS("13_AssemblyProcess_out/RCbray_prok.obj")
-f_rc_res <- readRDS("13_AssemblyProcess_out/RCbray_fungi.obj")
+b_rc_res <- readRDS("08_AssemblyProcess_out/RCbray_prok.obj")
+f_rc_res <- readRDS("08_AssemblyProcess_out/RCbray_fungi.obj")
 
 # environmental data (country, site, land use)
 env <- read.table("Data/soil_metadata.txt", header = T)
@@ -140,6 +140,6 @@ w.bNTI.RCbray_ITS <- w.bNTI.RCbray_ITS |>
 
 
 ### save data
-write.csv(w.bNTI.RCbray_16S, "13_AssemblyProcess_out/summary_bNTI_RCbray_prok.csv", row.names = F, quote = F)
-write.csv(w.bNTI.RCbray_ITS, "13_AssemblyProcess_out/summary_bNTI_RCbray_fungi.csv", row.names = F, quote = F)
+write.csv(w.bNTI.RCbray_16S, "08_AssemblyProcess_out/summary_bNTI_RCbray_prok.csv", row.names = F, quote = F)
+write.csv(w.bNTI.RCbray_ITS, "08_AssemblyProcess_out/summary_bNTI_RCbray_fungi.csv", row.names = F, quote = F)
 

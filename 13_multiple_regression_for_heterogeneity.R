@@ -211,41 +211,41 @@ CI_fungi_across_step <- model_fungi_across_step |> # selected model
 
 
 ### save data
-dir.create("09_multiple_regression_for_heterogeneity_out")
+dir.create("13_multiple_regression_for_heterogeneity_out")
 
 ## within-site regression
 # prokaryotes
-saveRDS(model_prok_within, "09_multiple_regression_for_heterogeneity_out/model_prok_within.obj")
-write.table(CI_prok_within, "09_multiple_regression_for_heterogeneity_out/CI_prok_within.txt", row.names = F, quote = F, sep = "\t")
-saveRDS(model_prok_within_step, "09_multiple_regression_for_heterogeneity_out/model_prok_within_selected.obj")
-write.table(CI_prok_within_step, "09_multiple_regression_for_heterogeneity_out/CI_prok_within_selected.txt", row.names = F, quote = F, sep = "\t")
+saveRDS(model_prok_within, "13_multiple_regression_for_heterogeneity_out/model_prok_within.obj")
+write.table(CI_prok_within, "13_multiple_regression_for_heterogeneity_out/CI_prok_within.txt", row.names = F, quote = F, sep = "\t")
+saveRDS(model_prok_within_step, "13_multiple_regression_for_heterogeneity_out/model_prok_within_selected.obj")
+write.table(CI_prok_within_step, "13_multiple_regression_for_heterogeneity_out/CI_prok_within_selected.txt", row.names = F, quote = F, sep = "\t")
 
 # fungi
-saveRDS(model_fungi_within, "09_multiple_regression_for_heterogeneity_out/model_fungi_within.obj")
-write.table(CI_fungi_within, "09_multiple_regression_for_heterogeneity_out/CI_fungi_within.txt", row.names = F, quote = F, sep = "\t")
-saveRDS(model_fungi_within_step, "09_multiple_regression_for_heterogeneity_out/model_fungi_within_selected.obj")
-write.table(CI_fungi_within_step, "09_multiple_regression_for_heterogeneity_out/CI_fungi_within_selected.txt", row.names = F, quote = F, sep = "\t")
+saveRDS(model_fungi_within, "13_multiple_regression_for_heterogeneity_out/model_fungi_within.obj")
+write.table(CI_fungi_within, "13_multiple_regression_for_heterogeneity_out/CI_fungi_within.txt", row.names = F, quote = F, sep = "\t")
+saveRDS(model_fungi_within_step, "13_multiple_regression_for_heterogeneity_out/model_fungi_within_selected.obj")
+write.table(CI_fungi_within_step, "13_multiple_regression_for_heterogeneity_out/CI_fungi_within_selected.txt", row.names = F, quote = F, sep = "\t")
 
 ## across-site regression
 # prokaryotes
-saveRDS(model_prok_across, "09_multiple_regression_for_heterogeneity_out/model_prok_across.obj")
-write.table(CI_prok_across, "09_multiple_regression_for_heterogeneity_out/CI_prok_across.txt", row.names = F, quote = F, sep = "\t")
-saveRDS(model_prok_across_step, "09_multiple_regression_for_heterogeneity_out/model_prok_across_selected.obj")
-write.table(CI_prok_across_step, "09_multiple_regression_for_heterogeneity_out/CI_prok_across_selected.txt", row.names = F, quote = F, sep = "\t")
+saveRDS(model_prok_across, "13_multiple_regression_for_heterogeneity_out/model_prok_across.obj")
+write.table(CI_prok_across, "13_multiple_regression_for_heterogeneity_out/CI_prok_across.txt", row.names = F, quote = F, sep = "\t")
+saveRDS(model_prok_across_step, "13_multiple_regression_for_heterogeneity_out/model_prok_across_selected.obj")
+write.table(CI_prok_across_step, "13_multiple_regression_for_heterogeneity_out/CI_prok_across_selected.txt", row.names = F, quote = F, sep = "\t")
 
 # fungi
-saveRDS(model_fungi_across, "09_multiple_regression_for_heterogeneity_out/model_fungi_across.obj")
-write.table(CI_fungi_across, "09_multiple_regression_for_heterogeneity_out/CI_fungi_across.txt", row.names = F, quote = F, sep = "\t")
-saveRDS(model_fungi_across_step, "09_multiple_regression_for_heterogeneity_out/model_fungi_across_selected.obj")
-write.table(CI_fungi_across_step, "09_multiple_regression_for_heterogeneity_out/CI_fungi_across_selected.txt", row.names = F, quote = F, sep = "\t")
+saveRDS(model_fungi_across, "13_multiple_regression_for_heterogeneity_out/model_fungi_across.obj")
+write.table(CI_fungi_across, "13_multiple_regression_for_heterogeneity_out/CI_fungi_across.txt", row.names = F, quote = F, sep = "\t")
+saveRDS(model_fungi_across_step, "13_multiple_regression_for_heterogeneity_out/model_fungi_across_selected.obj")
+write.table(CI_fungi_across_step, "13_multiple_regression_for_heterogeneity_out/CI_fungi_across_selected.txt", row.names = F, quote = F, sep = "\t")
 
 # collinearity
-write.table(vif_prok_within, "09_multiple_regression_for_heterogeneity_out/vif_within.txt", row.names = T, quote = F, sep = "\t") # same as vif_fungi_within
-write.table(vif_prok_across, "09_multiple_regression_for_heterogeneity_out/vif_across.txt", row.names = T, quote = F, sep = "\t") # same as vif_fungi_across
+write.table(vif_prok_within, "13_multiple_regression_for_heterogeneity_out/vif_within.txt", row.names = T, quote = F, sep = "\t") # same as vif_fungi_within
+write.table(vif_prok_across, "13_multiple_regression_for_heterogeneity_out/vif_across.txt", row.names = T, quote = F, sep = "\t") # same as vif_fungi_across
 
 
 ### save session info
 writeLines(capture.output(sessionInfo()),
            # please change 0X or XX below to the script number you used.
-           sprintf("00_SessionInfo/09_SessionInfo_%s.txt", substr(Sys.time(), 1, 10)))
+           sprintf("00_SessionInfo/13_SessionInfo_%s.txt", substr(Sys.time(), 1, 10)))
 

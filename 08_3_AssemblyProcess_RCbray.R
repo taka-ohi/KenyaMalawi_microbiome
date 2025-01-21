@@ -32,8 +32,8 @@ b_rc_res <- raup_crick_abundance_parallel(spXsite = b_ASV.t,
                                           plot_names_in_col1 = FALSE,
                                           reps = 9999,
                                           cl = 32)
-saveRDS(b_rc_res, "13_AssemblyProcess_out/RCbray_prok.obj")
-write.csv(b_rc_res, "13_AssemblyProcess_out/RCbray_prok.csv", quote = F)
+saveRDS(b_rc_res, "08_AssemblyProcess_out/RCbray_prok.obj")
+write.csv(b_rc_res, "08_AssemblyProcess_out/RCbray_prok.csv", quote = F)
 
 
 ## ITS
@@ -41,7 +41,7 @@ f_rc_res <- raup_crick_abundance_parallel(spXsite = f_ASV.t,
                                           plot_names_in_col1 = FALSE,
                                           reps = 9999,
                                           cl = 32)
-saveRDS(f_rc_res, "13_AssemblyProcess_out/RCbray_fungi.obj")
-write.csv(f_rc_res, "13_AssemblyProcess_out/RCbray_fungi.csv", quote = F)
+saveRDS(f_rc_res, "08_AssemblyProcess_out/RCbray_fungi.obj")
+write.csv(f_rc_res, "08_AssemblyProcess_out/RCbray_fungi.csv", quote = F)
 
 

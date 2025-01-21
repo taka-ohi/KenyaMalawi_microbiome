@@ -15,10 +15,10 @@ source("Function/F2_HelperFunctions_for_Visualization.R")
 
 
 ### load data
-CI_prok_ws <- read.table("09_multiple_regression_for_heterogeneity_out/CI_prok_within.txt", header = T)
-CI_fungi_ws <- read.table("09_multiple_regression_for_heterogeneity_out/CI_fungi_within.txt", header = T)
-CI_prok_as <- read.table("09_multiple_regression_for_heterogeneity_out/CI_prok_across.txt", header = T)
-CI_fungi_as <- read.table("09_multiple_regression_for_heterogeneity_out/CI_fungi_across.txt", header = T)
+CI_prok_ws <- read.table("13_multiple_regression_for_heterogeneity_out/CI_prok_within.txt", header = T)
+CI_fungi_ws <- read.table("13_multiple_regression_for_heterogeneity_out/CI_fungi_within.txt", header = T)
+CI_prok_as <- read.table("13_multiple_regression_for_heterogeneity_out/CI_prok_across.txt", header = T)
+CI_fungi_as <- read.table("13_multiple_regression_for_heterogeneity_out/CI_fungi_across.txt", header = T)
 
 # make a list for later use
 df_list <- list(CI_prok_ws = CI_prok_ws,

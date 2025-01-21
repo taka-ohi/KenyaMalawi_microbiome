@@ -96,10 +96,7 @@ figM2 <- plot_grid(cor_prok_funcall_ws + theme(legend.position = "none",
 )
 
 
-## 3. partitioning the dissimilarity
-# skipped (already made in FigM_part_dissimilarity_plottriangle.R)
-
-## 3'. community assembly process and variation partitioning
+## 3. community assembly process and variation partitioning
 bNTI_RC <- readRDS("FigCode/FigM_AssemblyProcess_out/assemblyprocess_ratio_plot.obj")
 varpart <- readRDS("FigCode/FigM_VariationPartitioning_out/variation_explained_plot.obj")
 figM3 <- plot_grid(bNTI_RC + theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
@@ -120,19 +117,6 @@ cor_fungi_patho_ws <- readRDS("FigCode/FigM_cor_btw_fungihetero_pathogen_out/fun
 # correlation btw fungitaxahetero x pathogenic fungi (across-site)
 cor_fungi_patho_as <- readRDS("FigCode/FigM_cor_btw_fungihetero_pathogen_out/fungihetero_pathogen_across.obj")
 
-## SIMPER analyzed only considering land uses
-# simper_allsite <- readRDS("FigCode/FigM_SIMPER_out/SIMPER_allsites.obj")
-# 
-# # combine figures
-# figM5 <- plot_grid(cor_fungi_patho_ws,
-#                    cor_fungi_patho_as,
-#                    leg_cor_as,
-#                    simper_allsite,
-#                    ncol = 3,
-#                    rel_widths = c(1.3, 1, 0.3),
-#                    labels = c("a", "b", NA, "c"),
-#                    label_size = 20
-# )
 
 ## contribution to heterogeneity (across-site)
 contrib_hetero_asac <- readRDS("FigCode/FigM_SIMPER_out/contrib_within_grp/contrib_plot_as_ac.obj")
@@ -182,14 +166,7 @@ ggsave(filename = "FigCode/FigMain_out/FigM_cor.taxafunchetero_Mantel.png",
        plot = figM2, width = 14.4, height = 18, bg = "white")
 
 
-## 3. partitioning the dissimilarity
-# the figures are already made so just copy and paste
-# current_folder <- "FigCode/FigM_part_dissimilarity_out"
-# new_folder <- "FigCode/FigMain_out"
-# list_of_files <- list.files(current_folder, pattern = "part_dissimilarity")
-# file.copy(file.path(current_folder,list_of_files), new_folder, overwrite = TRUE)
-
-## 3'. community assembly process and variation partitioning
+## 3. community assembly process and variation partitioning
 # save PDF
 cairo_pdf("FigCode/FigMain_out/FigM_assemblyprocess.varpart.pdf", width = 12, height = 13)
 print(figM3)

@@ -22,7 +22,7 @@ for (i in c("prok", "fungi")) {
   for (j in c("com", "func")) {
     for (k in c("nat", "farm")) {
       dfname <- paste0(i, j, ".", k)
-      tmp.df <- read.csv(sprintf("14_variation_partitioning_out/vp_R2_%s.csv", dfname))
+      tmp.df <- read.csv(sprintf("09_variation_partitioning_out/vp_R2_%s.csv", dfname))
       vpR2_all.df <- vpR2_all.df |>
         left_join(tmp.df |> select(X, Adj.R.squared), by = "X")
       colnames(vpR2_all.df)[ncol(vpR2_all.df)] <- paste0(dfname, ".r2.adj")

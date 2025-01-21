@@ -14,8 +14,8 @@ source("Function/F2_HelperFunctions_for_Visualization.R")
 
 
 ### load data
-w.bNTI.RCbray_16S <- read.csv("13_AssemblyProcess_out/summary_bNTI_RCbray_prok.csv", header = T)
-w.bNTI.RCbray_ITS <- read.csv("13_AssemblyProcess_out/summary_bNTI_RCbray_fungi.csv", header = T)
+w.bNTI.RCbray_16S <- read.csv("08_AssemblyProcess_out/summary_bNTI_RCbray_prok.csv", header = T)
+w.bNTI.RCbray_ITS <- read.csv("08_AssemblyProcess_out/summary_bNTI_RCbray_fungi.csv", header = T)
 
 
 ### format data

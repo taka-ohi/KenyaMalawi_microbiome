@@ -14,8 +14,8 @@ library(pbapply); packageVersion("pbapply")
 
 ### load data
 # phylogenetic tree
-treeNJ16s <- read.tree("13_AssemblyProcess_out/treeNJ16s.nwk") # 16S
-treeNJITS <- read.tree("13_AssemblyProcess_out/treeNJITS.nwk") # ITS
+treeNJ16s <- read.tree("08_AssemblyProcess_out/treeNJ16s.nwk") # 16S
+treeNJITS <- read.tree("08_AssemblyProcess_out/treeNJITS.nwk") # ITS
 
 # count table
 b_ASV.table <- read.table("01_DADA2_out/rarefied_ASV_table_16S.txt", header = T)
@@ -34,7 +34,7 @@ match.phylo.asvITS <- match.phylo.data(treeNJITS, f_ASV)
 ## 1-1. 16S
 beta.mntd.weighted16S <-  as.matrix(comdistnt(t(match.phylo.asv16S$data),cophenetic(match.phylo.asv16S$phy),abundance.weighted=T))
 dim(beta.mntd.weighted16S)
-write.csv(beta.mntd.weighted16S,"13_AssemblyProcess_out/betaMNTD_weighted16S.csv", quote=F)
+write.csv(beta.mntd.weighted16S,"08_AssemblyProcess_out/betaMNTD_weighted16S.csv", quote=F)
 
 identical(colnames(match.phylo.asv16S$data),colnames(beta.mntd.weighted16S)) # just a check, should be TRUE
 identical(colnames(match.phylo.asv16S$data),rownames(beta.mntd.weighted16S)) # just a check, should be TRUE
@@ -43,7 +43,7 @@ identical(colnames(match.phylo.asv16S$data),rownames(beta.mntd.weighted16S)) # j
 ## 1-2. ITS
 beta.mntd.weightedITS <-  as.matrix(comdistnt(t(match.phylo.asvITS$data),cophenetic(match.phylo.asvITS$phy),abundance.weighted=T))
 dim(beta.mntd.weightedITS)
-write.csv(beta.mntd.weightedITS,"13_AssemblyProcess_out/betaMNTD_weightedITS.csv", quote=F)
+write.csv(beta.mntd.weightedITS,"08_AssemblyProcess_out/betaMNTD_weightedITS.csv", quote=F)
 
 identical(colnames(match.phylo.asvITS$data),colnames(beta.mntd.weightedITS)) # just a check, should be TRUE
 identical(colnames(match.phylo.asvITS$data),rownames(beta.mntd.weightedITS)) # just a check, should be TRUE
@@ -89,7 +89,7 @@ for (columns in 1:(ncol(match.phylo.asv16S$data)-1)) {
 rownames(weighted.bNTI.16S) <- colnames(match.phylo.asv16S$data)
 colnames(weighted.bNTI.16S) <- colnames(match.phylo.asv16S$data)
 
-write.csv(weighted.bNTI.16S,"13_AssemblyProcess_out/weighted_bNTI_16S.csv",quote=F)
+write.csv(weighted.bNTI.16S,"08_AssemblyProcess_out/weighted_bNTI_16S.csv",quote=F)
 
 
 
@@ -129,4 +129,4 @@ for (columns in 1:(ncol(match.phylo.asvITS$data)-1)) {
 rownames(weighted.bNTI.ITS) <- colnames(match.phylo.asvITS$data)
 colnames(weighted.bNTI.ITS) <- colnames(match.phylo.asvITS$data)
 
-write.csv(weighted.bNTI.ITS,"13_AssemblyProcess_out/weighted_bNTI_ITS.csv",quote=F)
+write.csv(weighted.bNTI.ITS,"08_AssemblyProcess_out/weighted_bNTI_ITS.csv",quote=F)

@@ -175,8 +175,8 @@ env.farm <- env_vars |>
 # significant_indices <- order(moranI$pvalue)[moranI$pvalue < 0.05] # subset by significance
 # 
 # # draw the result
-# dir.create("14_variation_partitioning_out")
-# png(filename = "14_variation_partitioning_out/mems_significant.png", width = 1000, height = 1000, res = 300)
+# dir.create("09_variation_partitioning_out")
+# png(filename = "09_variation_partitioning_out/mems_significant.png", width = 1000, height = 1000, res = 300)
 # plot(mem.gab[,significant_indices], SpORcoords = mxy)
 # dev.off()
 
@@ -248,6 +248,7 @@ vp_fungilife.farm
 
 
 ### sumarize and save data
+dir.create("09_variation_partitioning_out")
 # list of the results
 pcalist <- list("prokcom.nat" = pca.hell.prok.nat,
                 "prokcom.farm" = pca.hell.prokfunc.farm,
@@ -295,18 +296,18 @@ for (i in 1:length(pcalist)) {
                    cca_space[1,],
                    cca_env_alone[1,],
                    cca_space_alone[1,])
-  write.csv(cca_res, file = sprintf("14_variation_partitioning_out/vp_stats_%s.csv", names(pcalist)[i]))
+  write.csv(cca_res, file = sprintf("09_variation_partitioning_out/vp_stats_%s.csv", names(pcalist)[i]))
   
   # result of variation partitioning
   vp <- vp_list[[i]]
   R2df <- vp$part$indfract
   rownames(R2df) <- c("EnvAlone", "SpaceAlone", "Overlap", "Residuals")
-  write.csv(R2df, file = sprintf("14_variation_partitioning_out/vp_R2_%s.csv", names(pcalist)[i]), quote = F, row.names = T)
+  write.csv(R2df, file = sprintf("09_variation_partitioning_out/vp_R2_%s.csv", names(pcalist)[i]), quote = F, row.names = T)
 }
 
 
 ### save session info
 writeLines(capture.output(sessionInfo()),
            # please change 0X or XX below to the script number you used.
-           sprintf("00_SessionInfo/14_SessionInfo_%s.txt", substr(Sys.time(), 1, 10))) 
+           sprintf("00_SessionInfo/09_SessionInfo_%s.txt", substr(Sys.time(), 1, 10))) 
 

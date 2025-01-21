@@ -52,21 +52,21 @@ fitGTRITS <- optim.pml(fitGTRITS, model="GTR", optInv=TRUE, optGamma=TRUE,
 
 ### save data
 # create a directory
-dir.create("13_AssemblyProcess_out")
+dir.create("08_AssemblyProcess_out")
 
 ## 16S tree
-saveRDS(mult16s, "13_AssemblyProcess_out//msa16s.obj") # alignment
-saveRDS(treeNJ16s, "13_AssemblyProcess_out/treeNJ16s.obj") # NJ tree
-saveRDS(fitGTR16s, "13_AssemblyProcess_out/treeGTR16s.obj") # GTR tree
-write.tree(treeNJ16s, "13_AssemblyProcess_out/treeNJ16s.nwk") # NJ tree
-write.tree(fitGTR16s$tree, "13_AssemblyProcess_out/treeGTR16s.nwk") # GTR tree
+saveRDS(mult16s, "08_AssemblyProcess_out//msa16s.obj") # alignment
+saveRDS(treeNJ16s, "08_AssemblyProcess_out/treeNJ16s.obj") # NJ tree
+saveRDS(fitGTR16s, "08_AssemblyProcess_out/treeGTR16s.obj") # GTR tree
+write.tree(treeNJ16s, "08_AssemblyProcess_out/treeNJ16s.nwk") # NJ tree
+write.tree(fitGTR16s$tree, "08_AssemblyProcess_out/treeGTR16s.nwk") # GTR tree
 
 ## ITS tree
-saveRDS(multITS, "13_AssemblyProcess_out/msaITS.obj") # alignment
-saveRDS(treeNJITS, "13_AssemblyProcess_out/treeNJITS.obj") # NJ tree
-write.tree(treeNJITS, "13_AssemblyProcess_out/treeNJITS.nwk") # NJ tree
-saveRDS(fitGTRITS, "13_AssemblyProcess_out/treeGTRITS.obj") # GTR tree
-write.tree(fitGTRITS$tree, "13_AssemblyProcess_out/treeGTRITS.nwk") # GTR tree
+saveRDS(multITS, "08_AssemblyProcess_out/msaITS.obj") # alignment
+saveRDS(treeNJITS, "08_AssemblyProcess_out/treeNJITS.obj") # NJ tree
+write.tree(treeNJITS, "08_AssemblyProcess_out/treeNJITS.nwk") # NJ tree
+saveRDS(fitGTRITS, "08_AssemblyProcess_out/treeGTRITS.obj") # GTR tree
+write.tree(fitGTRITS$tree, "08_AssemblyProcess_out/treeGTRITS.nwk") # GTR tree
 
 
 detach("package:phangorn", unload=TRUE)
