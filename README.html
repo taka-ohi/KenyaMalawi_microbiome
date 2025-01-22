@@ -355,33 +355,48 @@ display: none;
 <div id="r-and-shell-scripts-for-ohigashi-et-al.-202x-journal-name" class="section level1">
 <h1>R and Shell scripts for Ohigashi et al. (202X) <em>Journal
 Name</em></h1>
-<p>These scripts are to reproduce results and figures in Ohigashi et
-al. (202X) <em>Journal Name</em>. Citation information is as follows:
-<em>coming soon</em> <br> <br></p>
+<p>These scripts are provided to reproduce the results and figures
+presented in Ohigashi et al. (202X) <em>Journal Name</em>. Citation
+details: <em>coming soon</em></p>
+<p>Preprint: <a href="https://otfight67.wixsite.com/researchprofile"><img src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iOTAiIGhlaWdodD0iMjAiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iYmlvUnhpdjogVEVTVCI+PHRpdGxlPmJpb1J4aXY6IFRFU1Q8L3RpdGxlPjxsaW5lYXJHcmFkaWVudCBpZD0icyIgeDI9IjAiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNiYmIiIHN0b3Atb3BhY2l0eT0iLjEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3Atb3BhY2l0eT0iLjEiLz48L2xpbmVhckdyYWRpZW50PjxjbGlwUGF0aCBpZD0iciI+PHJlY3Qgd2lkdGg9IjkwIiBoZWlnaHQ9IjIwIiByeD0iMyIgZmlsbD0iI2ZmZiIvPjwvY2xpcFBhdGg+PGcgY2xpcC1wYXRoPSJ1cmwoI3IpIj48cmVjdCB3aWR0aD0iNTEiIGhlaWdodD0iMjAiIGZpbGw9IiM1NTUiLz48cmVjdCB4PSI1MSIgd2lkdGg9IjM5IiBoZWlnaHQ9IjIwIiBmaWxsPSIjZTA1ZDQ0Ii8+PHJlY3Qgd2lkdGg9IjkwIiBoZWlnaHQ9IjIwIiBmaWxsPSJ1cmwoI3MpIi8+PC9nPjxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLEdlbmV2YSxEZWphVnUgU2FucyxzYW5zLXNlcmlmIiB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LXNpemU9IjExMCI+PHRleHQgYXJpYS1oaWRkZW49InRydWUiIHg9IjI2NSIgeT0iMTUwIiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgdGV4dExlbmd0aD0iNDEwIj5iaW9SeGl2PC90ZXh0Pjx0ZXh0IHg9IjI2NSIgeT0iMTQwIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgZmlsbD0iI2ZmZiIgdGV4dExlbmd0aD0iNDEwIj5iaW9SeGl2PC90ZXh0Pjx0ZXh0IGFyaWEtaGlkZGVuPSJ0cnVlIiB4PSI2OTUiIHk9IjE1MCIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIHRleHRMZW5ndGg9IjI5MCI+VEVTVDwvdGV4dD48dGV4dCB4PSI2OTUiIHk9IjE0MCIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIGZpbGw9IiNmZmYiIHRleHRMZW5ndGg9IjI5MCI+VEVTVDwvdGV4dD48L2c+PC9zdmc+" alt="bioRxiv" /></a></p>
+<hr />
 <div id="important-notes" class="section level2">
 <h2>Important Notes</h2>
 <div id="microbial-count-data" class="section level3">
 <h3>1. Microbial count data</h3>
+<p>The raw microbial count data (<code>rarefied_ASV_table_16S.txt</code>
+and <code>rarefied_ASV_table_ITS.txt</code>) are not included in this
+repository, although references to them are made in the scripts.</p>
+<p>To generate these files, please follow the steps below:</p>
+<ol style="list-style-type: decimal">
+<li>Download the single-end FASTQ files from NCBI SRA:
 <ul>
-<li>The raw microbial count data (“rarefied_ASV_table_16S.txt” and
-“rarefied_ASV_table_ITS.txt”) are not shared in this repository although
-they appear in the scripts.</li>
-<li>Before running the scripts, you need to download our single-end
-fastq files from NCBI SRA XXXXXX. There is a correspondence table for
-the NCBI accession numbers and file names in
-“Data/Accession_num_list.csv”.</li>
-<li>Then, to do quality filtering, denoizing, and making ASV table, you
-need to run DADA2 using codes in “01_1_DADA2_16S.R” and
-“01_2_DADA2_ITS.R”, which produces “rarefied_ASV_table_16S.txt” and
-“rarefied_ASV_table_ITS.txt”.</li>
-</ul>
+<li><strong>PRJNA699079</strong> (for soils collected in Kenya)<br />
+</li>
+<li><strong>PRJNA699085</strong> (for soils collected in Malawi)<br />
+</li>
+</ul></li>
+<li>A correspondence table between NCBI accession numbers
+(<code>Run</code>) and FASTQ file names is provided in
+<code>Data/Accession_num_list.xlsx</code>.<br />
+</li>
+<li>Perform quality filtering, denoising, and creation of ASV tables
+using DADA2. Use the following scripts for these steps:
+<ul>
+<li><code>01_1_DADA2_16S.R</code><br />
+</li>
+<li><code>01_2_DADA2_ITS.R</code><br />
+Running these scripts will generate
+<code>rarefied_ASV_table_16S.txt</code> and
+<code>rarefied_ASV_table_ITS.txt</code>.</li>
+</ul></li>
+</ol>
 </div>
 <div id="microbial-function-analysis" class="section level3">
 <h3>2. Microbial function analysis</h3>
-<ul>
-<li>To run “02_2_PICRUSt2.sh”, you need to install PICRUSt2 on your PC
-first. The instruction is <a href="https://github.com/picrust/picrust2/wiki/Installation">here</a>.</li>
-</ul>
+<p>To execute <code>02_2_PICRUSt2.sh</code>, you need to install
+PICRUSt2 on your system beforehand. Detailed installation instructions
+can be found <a href="https://github.com/picrust/picrust2">here</a>.</p>
 </div>
 </div>
 </div>
