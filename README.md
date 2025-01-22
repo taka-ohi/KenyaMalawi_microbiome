@@ -1,8 +1,7 @@
 # R and Shell scripts for Ohigashi et al. (202X) _Journal Name_
 These scripts are provided to reproduce the results and figures presented in Ohigashi et al. (202X) *Journal Name*. Citation details: _coming soon_ 
 
-Preprint:
-[![bioRxiv](https://img.shields.io/badge/bioRxiv-TEST-red.svg)](https://otfight67.wixsite.com/researchprofile)
+[![bioRxiv](https://img.shields.io/badge/bioRxiv-Preprint-red.svg)](https://otfight67.wixsite.com/researchprofile)
 
 ---
 
