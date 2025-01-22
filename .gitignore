@@ -8,3 +8,4 @@ Archive
 01_DADA2_out
 *.gz
 02_Function_analysis_out/picrust2_out_pipline_rarefied
+*.html
