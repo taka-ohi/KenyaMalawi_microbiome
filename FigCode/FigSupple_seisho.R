@@ -153,8 +153,8 @@ figS_rel_patho <- plot_grid(rel_patho_lifestyle + theme(plot.margin = unit(c(0.5
 
 ## 6. NMDS (buffer)
 # load data
-b_nmds.buffer <- readRDS("FigCode/FigS_NMDS_check.buffer.effect/NMDS_plot_prok.buffer.obj")
-f_nmds.buffer <- readRDS("FigCode/FigS_NMDS_check.buffer.effect/NMDS_plot_fungi.buffer.obj")
+b_nmds.buffer <- readRDS("FigCode/FigS_NMDS_check.buffer.effect_out/NMDS_plot_prok.buffer.obj")
+f_nmds.buffer <- readRDS("FigCode/FigS_NMDS_check.buffer.effect_out/NMDS_plot_fungi.buffer.obj")
 
 # get legend
 leg_nmds.buffer <- get_legend(b_nmds.buffer)
