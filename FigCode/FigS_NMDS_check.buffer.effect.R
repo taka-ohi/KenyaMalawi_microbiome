@@ -132,16 +132,16 @@ plot(gf_buffer)
 
 
 ### save data
-dir.create("FigCode/FigS_NMDS_check.buffer.effect")
+dir.create("FigCode/FigS_NMDS_check.buffer.effect_out")
 # permanova result
-write.csv(b_perm, file = "FigCode/FigS_NMDS_check.buffer.effect/permanova.buffer_result_prok.csv", quote = F, row.names = T)
-write.csv(f_perm, file = "FigCode/FigS_NMDS_check.buffer.effect/permanova.buffer_result_fungi.csv", quote = F, row.names = T)
+write.csv(b_perm, file = "FigCode/FigS_NMDS_check.buffer.effect_out/permanova.buffer_result_prok.csv", quote = F, row.names = T)
+write.csv(f_perm, file = "FigCode/FigS_NMDS_check.buffer.effect_out/permanova.buffer_result_fungi.csv", quote = F, row.names = T)
 
 # plot objects
-saveRDS(gb_buffer, file = "FigCode/FigS_NMDS_check.buffer.effect/NMDS_plot_prok.buffer.obj")
-saveRDS(gf_buffer, file = "FigCode/FigS_NMDS_check.buffer.effect/NMDS_plot_fungi.buffer.obj")
+saveRDS(gb_buffer, file = "FigCode/FigS_NMDS_check.buffer.effect_out/NMDS_plot_prok.buffer.obj")
+saveRDS(gf_buffer, file = "FigCode/FigS_NMDS_check.buffer.effect_out/NMDS_plot_fungi.buffer.obj")
 
 # plot images
-ggsave(filename = "FigCode/FigS_NMDS_check.buffer.effect/NMDS_plot_prok.buffer.png", plot = gb_buffer)
-ggsave(filename = "FigCode/FigS_NMDS_check.buffer.effect/NMDS_plot_fungi.buffer.png", plot = gf_buffer)
+ggsave(filename = "FigCode/FigS_NMDS_check.buffer.effect_out/NMDS_plot_prok.buffer.png", plot = gb_buffer)
+ggsave(filename = "FigCode/FigS_NMDS_check.buffer.effect_out/NMDS_plot_fungi.buffer.png", plot = gf_buffer)
 
