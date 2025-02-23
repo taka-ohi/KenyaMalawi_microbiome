@@ -1,7 +1,7 @@
 # R and Shell scripts for Ohigashi et al. (_in prep_)
 These scripts are provided to reproduce the results and figures presented in Ohigashi et al. Citation details: _in prep_ 
 
-[![bioRxiv](https://img.shields.io/badge/bioRxiv-Preprint-red.svg)](https://www.biorxiv.org/content/10.1101/2025.02.17.638669v1)
+[![bioRxiv](https://img.shields.io/badge/bioRxiv-Preprint-red.svg)](https://doi.org/10.1101/2025.02.17.638669)
 
 ---
 
