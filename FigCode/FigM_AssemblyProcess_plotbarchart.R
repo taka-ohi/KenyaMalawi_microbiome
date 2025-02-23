@@ -77,7 +77,10 @@ p <- ggplot(plot.df.fin, aes(x = pair_landu, y = ratio, fill = process)) +
   theme_classic() +
   labs(x = NULL, y = "Ratio", fill = "Assembly Process") +
   theme(
-    strip.text = element_text(size = 9),
+    # strip.text = element_text(size = 9),
+    strip.text = element_text(size = 12),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 14),
     axis.title = element_text(size = 14),
     axis.text.x = element_text(angle = 45, hjust = 1, size = 12)
   )
@@ -87,7 +90,7 @@ p <- ggplot(plot.df.fin, aes(x = pair_landu, y = ratio, fill = process)) +
 dir.create("FigCode/FigM_AssemblyProcess_out")
 
 # plot object
-ggsave("FigCode/FigM_AssemblyProcess_out/assemblyprocess_ratio.png", plot = p, width = 11.5, height = 7, bg = "white")
+ggsave("FigCode/FigM_AssemblyProcess_out/assemblyprocess_ratio.png", plot = p, width = 14, height = 9, bg = "white")
 saveRDS(p, "FigCode/FigM_AssemblyProcess_out/assemblyprocess_ratio_plot.obj")
 
 # used data frame

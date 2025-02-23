@@ -151,7 +151,22 @@ figS_rel_patho <- plot_grid(rel_patho_lifestyle + theme(plot.margin = unit(c(0.5
 )
 
 
-## 6. NMDS (buffer)
+## 6. bNTI and soil moisture
+# load data
+bnti.wa.plots <- readRDS("FigCode/FigS_bNTI_cor_out/plot_list.pbj")
+# combine figures
+figS_bnti.wa <- plot_grid(bnti.wa.plots[["mean_prok"]] + theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
+                          bnti.wa.plots[["mean_fungi"]] + theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
+                          ncol = 2,
+                          rel_heights =  c(1, 1),
+                          labels = c("a", "b"),
+                          label_size = 20
+                          )
+
+
+
+
+## 7. NMDS (buffer)
 # load data
 b_nmds.buffer <- readRDS("FigCode/FigS_NMDS_check.buffer.effect_out/NMDS_plot_prok.buffer.obj")
 f_nmds.buffer <- readRDS("FigCode/FigS_NMDS_check.buffer.effect_out/NMDS_plot_fungi.buffer.obj")
@@ -226,7 +241,17 @@ ggsave(filename = "FigCode/FigSupple_out/FigS_relabun_pathotrophs.png",
        plot = figS_rel_patho, width = 12, height = 13, bg = "white")
 
 
-## 6. NMDS (buffer)
+## 6. bNTI and moisture
+# save PDF
+cairo_pdf("FigCode/FigSupple_out/FigS_bNTI_moisture.pdf", width = 13, height = 6)
+print(figS_bnti.wa)
+dev.off()
+# save png
+ggsave(filename = "FigCode/FigSupple_out/FigS_bNTI_moisture.png",
+       plot = figS_bnti.wa, width = 13, height = 6, bg = "white")
+
+
+## 7. NMDS (buffer)
 # save PDF
 cairo_pdf("FigCode/FigSupple_out/FigS_nmds_buffer.pdf", width = 14.4, height = 6)
 print(figS_nmds)

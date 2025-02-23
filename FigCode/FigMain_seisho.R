@@ -168,12 +168,12 @@ ggsave(filename = "FigCode/FigMain_out/FigM_cor.taxafunchetero_Mantel.png",
 
 ## 3. community assembly process and variation partitioning
 # save PDF
-cairo_pdf("FigCode/FigMain_out/FigM_assemblyprocess.varpart.pdf", width = 12, height = 13)
+cairo_pdf("FigCode/FigMain_out/FigM_assemblyprocess.varpart.pdf", width = 15, height = 18)
 print(figM3)
 dev.off()
 # save png
 ggsave(filename = "FigCode/FigMain_out/FigM_assemblyprocess.varpart.png",
-       plot = figM3, width = 12, height = 13, bg = "white")
+       plot = figM3, width = 15, height = 18, bg = "white")
 
 
 
