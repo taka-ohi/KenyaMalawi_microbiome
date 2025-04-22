@@ -1,0 +1,6 @@
+Model,BIC,delta,Farming,Moisture,Carbon,Nitrogen,pH,Moisture (dev),Carbon (dev),Nitrogen (dev),pH (dev)
+Prok_across_1,196.78,0.00,,0.75,,,,−0.28,,,
+Prok_across_2,199.38,2.59,,0.75,,,,−0.29,,−0.10,
+Prok_across_3,199.72,2.94,−0.09,0.74,,,,−0.30,,,
+Prok_across_4,200.32,3.54,,0.74,,,,−0.29,,,−0.07
+Prok_across_5,200.76,3.98,−0.19,0.78,,,−0.17,−0.28,,,

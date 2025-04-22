@@ -1,0 +1,6 @@
+Model,BIC,delta,Farming,Moisture,Carbon,Nitrogen,pH,Moisture (dev),Carbon (dev),Nitrogen (dev),pH (dev)
+Fungi_across_1,174.72,0.00,−0.68,−0.52,,,,,,,
+Fungi_across_2,175.97,1.25,−0.67,−0.53,,,,,0.11,,
+Fungi_across_3,178.67,3.95,−0.72,−0.51,,,−0.06,,,,
+Fungi_across_4,178.75,4.04,−0.68,−0.52,,,,,,−0.04,
+Fungi_across_5,178.88,4.16,−0.67,−0.54,0.04,,,,,,

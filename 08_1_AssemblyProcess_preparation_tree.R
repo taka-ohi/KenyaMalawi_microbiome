@@ -55,7 +55,7 @@ fitGTRITS <- optim.pml(fitGTRITS, model="GTR", optInv=TRUE, optGamma=TRUE,
 dir.create("08_AssemblyProcess_out")
 
 ## 16S tree
-saveRDS(mult16s, "08_AssemblyProcess_out//msa16s.obj") # alignment
+saveRDS(mult16s, "08_AssemblyProcess_out/msa16s.obj") # alignment
 saveRDS(treeNJ16s, "08_AssemblyProcess_out/treeNJ16s.obj") # NJ tree
 saveRDS(fitGTR16s, "08_AssemblyProcess_out/treeGTR16s.obj") # GTR tree
 write.tree(treeNJ16s, "08_AssemblyProcess_out/treeNJ16s.nwk") # NJ tree

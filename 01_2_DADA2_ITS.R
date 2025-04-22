@@ -1,7 +1,7 @@
 ####
 #### R script for Ohigashi et al (2024)
 #### quality filtering, denoizing, and creating ASV table for ITS community using dada2
-#### 2024.06.28 written by Ohigashi
+#### 2024.06.28 written by Ohigashi; 2025.04.15 edited by Ohigashi for rarefaction curves
 #### R 4.3.3
 #### README: be sure that ITS fastq files are in the "Data/2020kenya_malawi_ITS" directory
 
@@ -206,6 +206,46 @@ rared_f_ASV.table <- merge(rared_f_ASV_wo_0, rared_f_taxa, by = "ASV", all.x = T
 rared_f_ASV.table <- rared_f_ASV.table |> column_to_rownames(var = "ASV")
 
 write.table(rared_f_ASV.table,  file="../../01_DADA2_out/rarefied_ASV_table_ITS.txt", quote=F, sep = "\t")
+
+
+### create rarefaction curves ###
+# get raw ASV data
+ps.t <- read.table("01_DADA2_out/ASV_table_ITS.txt", header = T)
+# remove "g__" or "p__" things from the taxa
+# Define a function to remove the prefix
+remove_prefix <- function(x) {
+  sub("^._{2}", "", x)
+}
+# Apply the function to each column
+ps.t_cleaned <- ps.t %>%
+  mutate(across((ncol(ps.t)-6):(ncol(ps.t)), remove_prefix))
+
+ps.t_wo_others <- ps.t_cleaned |>
+  dplyr::filter(Kingdom == "Fungi") # removed the ones which were not assigned as "Fungi"
+
+# get ASV count table
+f_ASV <- ps.t_wo_others[,1:(ncol(ps.t_wo_others)-7)]
+f_ASV.t <- t(f_ASV)
+
+# get rarafaction curve data
+f_rarecurve <- rarecurve(f_ASV.t, step = 100, sample = min(rowSums(f_ASV.t)),
+                         # xlab = "Number of reads", ylab = "Number of ASVs",
+                         # col = "blue", cex = 0.6, label = FALSE,
+                         tidy = T)
+# plot rarefaction curve
+p_f_rarecurve <- ggplot(data = f_rarecurve, aes(x = Sample, y = Species, group = Site)) +
+  geom_line(color = "blue") +
+  geom_vline(xintercept = min(rowSums(f_ASV.t))) +
+  theme_classic() +
+  labs(x = "Number of reads sampled", y = "Observed ASV richness", title = "Rarefaction curves for fungal communities")
+# p_f_rarecurve
+
+# save the curve
+write.csv(f_rarecurve, file = "01_DADA2_out/rarefaction_curve_fungi.csv", quote = F, row.names = F)
+ggsave("01_DADA2_out/rarefaction_curve_fungi.png", plot = p_f_rarecurve,
+       width = 8, height = 7, bg = "white")
+saveRDS(p_f_rarecurve, "01_DADA2_out/rarefaction_curve_fungi.rds")
+
 
 ### save session info
 setwd("~/Desktop/analysis/R_kenmal/KenyaMalawi_microbiome/")

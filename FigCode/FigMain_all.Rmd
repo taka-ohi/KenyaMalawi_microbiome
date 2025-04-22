@@ -15,7 +15,7 @@ header-includes:
 
 <center>
 
-![**Figure 1**\. Location of sampling sites and concept of the analysis. (**a**) The sampling locations, Sites D—F in Kenya and Sites G and H in Malawi, are annotated in the map. (**b**) All sites had pairs of neighboring natural (unmanaged) lands and farmlands. Nine soil samples were collected at each land use at one site, resulting in 45 samples for each land use across five sites.](FigMain_out/FigM_concept_via.upload.pdf)
+![**Figure 1**\. Location of sampling sites and concept of the analysis. (**a**) The sampling locations, Sites D—F in Kenya and Sites G and H in Malawi, are annotated in the map. (**b**) All sites had a pair of neighboring natural (unmanaged) land and farmland. Nine soil samples were collected at each land use at one site, resulting in 45 samples for each land use across five sites.](FigMain_out/FigM_concept_via.upload.pdf)
 
 </center>
 

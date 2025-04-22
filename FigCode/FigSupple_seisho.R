@@ -187,6 +187,21 @@ figS_nmds <- plot_grid(b_nmds.buffer + theme(legend.position = "none",
 )
 
 
+## 8. Rarefaction curve
+# load data
+rare_prok <- readRDS("01_DADA2_out/rarefaction_curve_prok.rds")
+rare_fungi <- readRDS("01_DADA2_out/rarefaction_curve_fungi.rds")
+
+# combine data
+figS_rare <- plot_grid(rare_prok + theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
+                       rare_fungi + theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
+                       ncol = 2,
+                       rel_widths =  c(1, 1),
+                       labels = c("a", "b"),
+                       label_size = 20
+)
+
+
 ########### save data ###########
 # create a directory for output files
 dir.create("FigCode/FigSupple_out")
@@ -260,6 +275,15 @@ dev.off()
 ggsave(filename = "FigCode/FigSupple_out/FigS_nmds_buffer.png",
        plot = figS_nmds, width = 14.4, height = 6, bg = "white")
 
+
+## 8. Rarefaction curve
+# save PDF
+cairo_pdf("FigCode/FigSupple_out/FigS_rarecurves.pdf", width = 12, height = 6)
+print(figS_rare)
+dev.off()
+# save png
+ggsave(filename = "FigCode/FigSupple_out/FigS_rarecurves.png",
+       plot = figS_rare, width = 12, height = 6, bg = "white")
 
 
 

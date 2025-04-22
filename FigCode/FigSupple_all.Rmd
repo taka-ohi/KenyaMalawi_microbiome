@@ -1,5 +1,5 @@
 ---
-title: 'Supplementary materials for "Agricultural land use induces broader homogenization of soil microbial functional composition than taxonomic composition"'
+title: 'Supplementary materials for "Agricultural land use induces broader homogenization of soil microbial functional composition than taxonomic composition in sub-Saharan Africa"'
 author: '**Takamitsu Ohigashi**, Yvonne M. Madegwa, George N. Karuku, Keston Njira, Yoshitaka Uchida'
 output:
   pdf_document:

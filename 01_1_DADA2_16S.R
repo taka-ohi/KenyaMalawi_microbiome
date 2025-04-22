@@ -1,7 +1,7 @@
 ####
 #### R script for Ohigashi et al (2024)
 #### quality filtering, denoizing, and creating ASV table for 16S rRNA community using dada2
-#### 2024.06.28 written by Ohigashi
+#### 2024.06.28 written by Ohigashi; 2025.04.15 edited by Ohigashi for rarefaction curves
 #### R 4.3.3
 #### README: be sure that 16S rRNA fastq files are in the "Data/2019kenya_malawi_16S" directory
 
@@ -202,6 +202,44 @@ rared_b_ASV.table <- merge(rared_b_ASV_wo_0, rared_b_taxa, by = "ASV", all.x = T
 rared_b_ASV.table <- rared_b_ASV.table |> column_to_rownames(var = "ASV")
 
 write.table(rared_b_ASV.table,  file="../../01_DADA2_out/rarefied_ASV_table_16S.txt", quote=F, sep = "\t")
+
+
+### create rarefaction curves ###
+# get raw ASV data
+ps.t <- read.table("01_DADA2_out/ASV_table_16S.txt", header = T)
+ps.t <- ps.t |>
+  mutate(Species=rep(NA, nrow(ps.t))) # add dummy "Species" column for combining with Fungi table later.
+
+# remove mitochondria, chloroplast, and eukaryota
+ps.t_wo_others <- ps.t |>
+  dplyr::filter(Order != "Chloroplast" | is.na(Order)) %>%
+  dplyr::filter(Family != "Mitochondria" | is.na(Family)) %>%
+  dplyr::filter(Kingdom != "Eukaryota" | is.na(Kingdom)) %>%
+  dplyr::filter(!is.na(Kingdom)) # removed the ones which were not assigned as either "Bacteria" or "Archaea"
+
+# get ASV count table
+b_ASV <- ps.t_wo_others[,1:(ncol(ps.t_wo_others)-7)]
+b_ASV.t <- t(b_ASV)
+
+# get rarafaction curve data
+b_rarecurve <- rarecurve(b_ASV.t, step = 100, sample = min(rowSums(b_ASV.t)),
+                         # xlab = "Number of reads", ylab = "Number of ASVs",
+                         # col = "blue", cex = 0.6, label = FALSE,
+                         tidy = T)
+# plot rarefaction curve
+p_b_rarecurve <- ggplot(data = b_rarecurve, aes(x = Sample, y = Species, group = Site)) +
+  geom_line(color = "blue") +
+  geom_vline(xintercept = min(rowSums(b_ASV.t))) +
+  theme_classic() +
+  labs(x = "Number of reads sampled", y = "Observed ASV richness", title = "Rarefaction curves for prokaryotic communities")
+# p_b_rarecurve
+
+# save the curve
+write.csv(b_rarecurve, file = "01_DADA2_out/rarefaction_curve_prok.csv", quote = F, row.names = F)
+ggsave("01_DADA2_out/rarefaction_curve_prok.png", plot = p_b_rarecurve,
+       width = 8, height = 7, bg = "white")
+saveRDS(p_b_rarecurve, "01_DADA2_out/rarefaction_curve_prok.rds")
+
 
 #### save session info
 setwd("~/Desktop/analysis/R_kenmal/KenyaMalawi_microbiome/")
