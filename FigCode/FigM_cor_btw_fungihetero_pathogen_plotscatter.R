@@ -1,7 +1,7 @@
 ####
 #### R script for Ohigashi et al (2024)
 #### correlation between heterogeneity of fungal community x abundance of pathogen
-#### 2024.09.13 written by Ohigashi
+#### 2024.09.13 written by Ohigashi; 2025.05.31 edited by Ohigashi to show regression lines if p < 0.05
 #### R 4.3.3
 ####
 
@@ -73,20 +73,19 @@ sig_site <- cor_res.w |>
 
 # plot
 ws_fungi$Landuse <- factor(ws_fungi$Landuse, levels = c("Natural", "Farm"))
-ws_g <- #ggplot(ws_fungi, aes(x = fungitaxa_within, y = Pathotroph, color = Site, shape = Landuse)) +
-  ggplot(ws_fungi, aes(x = fungitaxa_within, y = Pathotroph, shape = Site, color = Landuse)) +
+ws_g <- ggplot(ws_fungi, aes(x = fungitaxa_within, y = Pathotroph, color = Site, shape = Landuse)) +
+  # ggplot(ws_fungi, aes(x = fungitaxa_within, y = Pathotroph, shape = Site, color = Landuse)) +
   geom_point(size=3.5) + 
-  # scale_shape_manual(values = c(16, 3))+
-  scale_color_manual(values=c("Farm"="tan1", "Natural"="darkgreen"))+
+  scale_shape_manual(values = c(16, 4))+
+  # scale_color_manual(values=c("Farm"="tan1", "Natural"="darkgreen"))+
   labs(x = "Distance to centroids of fungal communities",
        y = "Relative abundance of pathotroph (%)",
-       color = "Site",
-       shape = "Land use",
+       color = "Site", shape = "Land use",
        title = "Fungal heterogeneity × Pathogenic fungi (within-site)"
   ) + 
-  # geom_smooth(data = subset(ws_fungi, Site %in% sig_site),
-  #             method = "lm", se = FALSE, #inherit.aes = FALSE,
-  #             aes(group = Site)) +
+  geom_smooth(data = subset(ws_fungi, Site %in% sig_site),
+              method = "lm", se = FALSE, #inherit.aes = FALSE,
+              aes(group = Site)) +
   theme_classic()+
   theme(axis.text = element_text(size = 12, color = "black"),
         axis.title = element_text(size = 12, color = "black"),
@@ -132,6 +131,7 @@ as_g <- ggplot(as_fungi, aes(x = fungitaxa_across, y = Pathotroph, color = Landu
        shape = "Site",
        title = "Fungal heterogeneity × Pathogenic fungi (across-site)"
   ) + 
+  geom_smooth(method = "lm", aes(group = 1), color = "black", se = FALSE) +
   theme_linedraw()+
   theme(axis.text = element_text(size = 12, color = "black"),
         axis.title = element_text(size = 12, color = "black"),

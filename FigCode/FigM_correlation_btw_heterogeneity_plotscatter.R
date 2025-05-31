@@ -1,7 +1,7 @@
 ####
 #### R script for Ohigashi et al (2024)
 #### Figure for NMDS plot
-#### 2024.09.05 written by Ohigashi
+#### 2024.09.05 written by Ohigashi; 2025.05.31 edited by Ohigashi to show regression lines if p < 0.05
 #### R 4.3.3
 ####
 
@@ -143,19 +143,20 @@ for (i in 1:10){
   
   # create plot
   ws_g <- ggplot(ws.cat_df,
-                 # aes_string(x = ws.pairs$x[i], y = ws.pairs$y[i], color = "Site", shape = "Landuse")) +
-                 aes_string(x = ws.pairs$x[i], y = ws.pairs$y[i], shape = "Site", color = "Landuse")) +
+                 aes_string(x = ws.pairs$x[i], y = ws.pairs$y[i], color = "Site", shape = "Landuse")) + 
+                 # aes_string(x = ws.pairs$x[i], y = ws.pairs$y[i], shape = "Site", color = "Landuse")) +
     geom_point(size=3.5) + 
-    scale_color_manual(values=c("Farm"="tan1", "Natural"="darkgreen"))+
+    # scale_color_manual(values=c("Farm"="tan1", "Natural"="darkgreen"))+
+    scale_shape_manual(values=c("Farm"=4, "Natural"=16)) +
     labs(x = x_name,
          y = y_name,
-         shape = "Site",
-         color = "Land use",
+         # shape = "Site", color = "Land use",
+         shape = "Land use", color = "Site",
          title = ws.plottitles[i]
     ) + 
-    # geom_smooth(data = subset(ws.cat_df, Site %in% sig_site),
-    #             method = "lm", se = FALSE, #inherit.aes = FALSE,
-    #             aes(group = Site)) +
+    geom_smooth(data = subset(ws.cat_df, Site %in% sig_site),
+                method = "lm", se = FALSE, #inherit.aes = FALSE,
+                aes(group = Site)) +
     theme_classic()+
     theme(axis.text = element_text(size = 12, color = "black"),
           axis.title = element_text(size = 12, color = "black"),
@@ -264,6 +265,15 @@ for (i in 1:10){
              hjust = "left",
              size = 4
     )
+  
+  # if significant, draw a regression line
+  if (cor_res[1, 4] == "n.s.") {
+    as_g <- as_g
+  } else {
+    as_g <- as_g +
+      geom_smooth(method = "lm", aes(group = 1), color = "black", se = FALSE)
+  }
+  
   as_g_fin <- ggMarginal(as_g,
                    groupColour = TRUE,
                    groupFill = TRUE
@@ -304,29 +314,6 @@ as_legend <- get_legend(as_test)
 
 
 
-### combine plots and create a figure for the main article
-# using proktaxa x cfunc, proktaxa x nfunc, fungitaxa x fungilifestyles for both within-site and across-site scales
-fig_all <- plot_grid(ws_plots[[8]] +
-                       theme(legend.position = "none",
-                             plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-                     ws_plots[[9]] +
-                       theme(legend.position = "none",
-                             plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-                     ws_plots[[10]] +
-                       theme(legend.position = "none",
-                             plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-                     ws_legend,
-                     as_plots[[8]],
-                     as_plots[[9]],
-                     as_plots[[10]],
-                     as_legend,
-                     ncol = 4,
-                     rel_widths = c(1, 1, 1, 0.4),
-                     labels = c("a", "b", "c", NA, "d", "e", "f", NA),
-                     label_size = 20
-)
-
-
 
 ### save data
 # create a directory
@@ -354,14 +341,6 @@ for (i in 1:10) {
          bg = "white", width = 8, height = 8)
 }
 
-# save PDF for the main article
-cairo_pdf("FigCode/FigM_correlation_btw_heterogeneity_out/FigM_correlation_btw_heterogeneity.pdf", width = 18, height = 12)
-print(fig_all)
-dev.off()
-
-# save png
-ggsave(filename = "FigCode/FigM_correlation_btw_heterogeneity_out/FigM_correlation_btw_heterogeneity.png",
-       plot = fig_all, width = 18, height = 12, bg = "white")
 
 # save legend for across-site (because it was mendokusai to get it separately)
 saveRDS(as_legend, "FigCode/FigM_correlation_btw_heterogeneity_out/FigM_cor_across_legend.obj")

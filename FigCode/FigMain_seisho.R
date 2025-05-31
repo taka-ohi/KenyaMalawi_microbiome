@@ -192,8 +192,6 @@ cairo_pdf("FigCode/FigMain_out/FigM_cor.fungihetero.patho_contrib.hetero.pdf", w
 print(figM5_2)
 dev.off()
 # save png
-# ggsave(filename = "FigCode/FigMain_out/FigM_cor.fungihetero.patho_SIMPER.png",
-#        plot = figM5, width = 14, height = 12, bg = "white")
 ggsave(filename = "FigCode/FigMain_out/FigM_cor.fungihetero.patho_contrib.hetero.png",
        plot = figM5_2, width = 14, height = 12, bg = "white")
 
