@@ -362,7 +362,7 @@ distdata_sorted |>
 
 # -> so, I set the distance class at 0~200 m, 200~70000 m, and 70000~1500000 m
 # -> on 2024.07.14, increased the number of distance class 0~200, 200~30000, 30000~700000, 70000~1444000, 1444000~1500000
-# 30000 is a distance that includes any pairs of 2 sites but without Site F.
+# 30000 is a distance that includes any pairs of 2 sites within the country but without Site F.
 # 1444000 is a distance that includes "Site F to G or H", but not "Site D or E to G or H"
 
 

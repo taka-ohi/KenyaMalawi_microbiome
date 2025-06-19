@@ -109,20 +109,21 @@ assigned_summary <- assigned_percent %>%
             )
 
 ### save data
-dir.create("FigCode/FigS_FungalTraits_summary")
+dir.create("FigCode/FigS_FungalTraits_summary_out")
 
 # assigned percentage (raw)
-write.csv(assigned_percent, "FigCode/FigS_FungalTraits_summary/assignedASV_percent.csv",
+write.csv(assigned_percent, "FigCode/FigS_FungalTraits_summary_out/assignedASV_percent.csv",
           row.names = F, quote = F)
 # assigned percentage (summary)
-write.csv(assigned_summary, "FigCode/FigS_FungalTraits_summary/assignedASV_percent_summary.csv",
+write.csv(assigned_summary, "FigCode/FigS_FungalTraits_summary_out/assignedASV_percent_summary.csv",
           row.names = F, quote = F)
 
 # figure
 # save PDF
-cairo_pdf("FigCode/FigS_FungalTraits_summary/primary_lifestyles.pdf", width = 12, height = 6.5)
+cairo_pdf("FigCode/FigS_FungalTraits_summary_out/primary_lifestyles.pdf", width = 12, height = 6.5)
 print(plife)
 dev.off()
-ggsave("FigCode/FigS_FungalTraits_summary/primary_lifestyles.png", plot = plife, width = 12, height = 6.5, bg = "white")
+ggsave("FigCode/FigS_FungalTraits_summary_out/primary_lifestyles.png", plot = plife, width = 12, height = 6.5, bg = "white")
+saveRDS(plife, "FigCode/FigS_FungalTraits_summary_out/primary_lifestyles.rds")
 
 

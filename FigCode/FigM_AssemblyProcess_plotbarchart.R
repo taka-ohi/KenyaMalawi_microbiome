@@ -49,14 +49,14 @@ plot.df <- rbind(prok_res.df, fungi_res.df)
 plot.df <- plot.df |>
   mutate(pair_scale2 = case_when(
     pair_scale == "within_site" ~ "Within-site",
-    pair_scale == "across_site_within_country" ~ "Across-site\n(within the country)",
-    pair_scale == "across_site_btw_country" ~ "Across-site\n(between the countries)",
+    pair_scale == "across_site_within_country" ~ "Across-site\n(within country)",
+    pair_scale == "across_site_btw_country" ~ "Across-site\n(between countries)",
     TRUE ~ NA
   )
   )
 plot.df$pair_scale2 <- factor(plot.df$pair_scale2, levels = c("Within-site",
-                                                              "Across-site\n(within the country)",
-                                                              "Across-site\n(between the countries)"
+                                                              "Across-site\n(within country)",
+                                                              "Across-site\n(between countries)"
                                                               ))
 plot.df$pair_landu <- factor(plot.df$pair_landu, levels = c("Natural", "Farm", "cross_landuse"))
 plot.df$orgs <- factor(plot.df$orgs, levels = c("Prokaryotes", "Fungi"))
@@ -78,19 +78,21 @@ p <- ggplot(plot.df.fin, aes(x = pair_landu, y = ratio, fill = process)) +
   labs(x = NULL, y = "Ratio", fill = "Assembly Process") +
   theme(
     # strip.text = element_text(size = 9),
-    strip.text = element_text(size = 12),
-    legend.title = element_text(size = 14),
-    legend.text = element_text(size = 14),
-    axis.title = element_text(size = 14),
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 12)
+    strip.text = element_text(size = 14),
+    legend.title = element_text(size = 15),
+    legend.text = element_text(size = 15),
+    axis.title = element_text(size = 16),
+    axis.text = element_text(size = 16),
+    axis.text.x = element_text(angle = 45, hjust = 1)
   )
+p
 
 
 ### save data
 dir.create("FigCode/FigM_AssemblyProcess_out")
 
 # plot object
-ggsave("FigCode/FigM_AssemblyProcess_out/assemblyprocess_ratio.png", plot = p, width = 14, height = 9, bg = "white")
+ggsave("FigCode/FigM_AssemblyProcess_out/assemblyprocess_ratio.png", plot = p, width = 13, height = 6, bg = "white")
 saveRDS(p, "FigCode/FigM_AssemblyProcess_out/assemblyprocess_ratio_plot.obj")
 
 # used data frame

@@ -19,8 +19,8 @@ library(tibble); packageVersion("tibble")
 env_data <- read.table("Data/soil_metadata.txt", header = T)
 env_category <- env_data[,1:4] # extract category data
 env_vars <- env_data[, 5:9] # extract soil env data
-scale_values <- function(x){(x-min(x))/(max(x)-min(x))} # scale the variables so that they distribute from 0 to 1
-s_env_vars <- scale_values(env_vars)
+# scale_values <- function(x){(x-min(x))/(max(x)-min(x))} # scale the variables so that they distribute from 0 to 1
+# s_env_vars <- as.data.frame(apply(env_vars, 2, scale_values))
 
 # prokaryotes ASV table
 b_ASV.table <- read.table("01_DADA2_out/rarefied_ASV_table_16S.txt", header = T)
@@ -84,7 +84,7 @@ fungilife_across <- DistToCent(fungilife.t, method = "bray", group = env_categor
                                name = "fungilife_across")
 
 # environmental data
-env_across <- DistToCent(s_env_vars, method = "bray", group = env_category$Landuse,
+env_across <- DistToCent(env_vars, method = "bray", group = env_category$Landuse,
                          name = "env_across")
 
 # combine the data
@@ -128,7 +128,7 @@ fungilife_within <- DistToCent(fungilife.t, method = "bray", group = env_categor
                                name = "fungilife_within")
 
 # environmental data
-env_within <- DistToCent(s_env_vars, method = "bray", group = env_category$Treatment,
+env_within <- DistToCent(env_vars, method = "bray", group = env_category$Treatment,
                          name = "env_within")
 
 # combine the data

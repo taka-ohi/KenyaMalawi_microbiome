@@ -380,7 +380,8 @@ CorrInCat <- function(data, var1, var2, method = "pearson", category) {
   treatment <- unique(data[[category]]) # ex. Site
   cor_result <- data.frame(r=NA, p.value=NA) # make a dummy data frame
   for (i in 1:length(treatment)){
-    sub_df <- data |> dplyr::filter(data[[category]]==treatment[i]) # subset by category
+    # sub_df <- data |> dplyr::filter(data[[category]]==treatment[i]) # subset by category
+    sub_df <- data[data[[category]] == treatment[i], ]
     var1_col <- sub_df[[var1]]
     var2_col <- sub_df[[var2]]
     cor <- cor.test(var1_col, var2_col, method = method) # correlation test

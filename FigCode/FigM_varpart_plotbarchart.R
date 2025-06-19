@@ -91,10 +91,12 @@ p <- ggplot(plot.df, aes(x = Landuse, y = value.percent, fill = X2)) +
   labs(x = NULL, y = "Variation Explained (%)", fill = "") +
   theme(
     # strip.text = element_text(size = 9),
-    strip.text = element_text(size = 12),
-    legend.text = element_text(size = 14),
-    axis.title = element_text(size = 14),
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 12)
+    strip.text = element_text(size = 14),
+    legend.title = element_text(size = 15),
+    legend.text = element_text(size = 15),
+    axis.title = element_text(size = 16),
+    axis.text = element_text(size = 16),
+    axis.text.x = element_text(angle = 45, hjust = 1)
   )
 p
 
