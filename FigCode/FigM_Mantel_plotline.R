@@ -80,9 +80,9 @@ prok_p <- ggplot(prokdf, aes(x = dist.class, y = Mantel.cor,
     color = "black",
     size = 4
   ) +
-  annotate("text", x = 1, y = min(prokdf$Mantel.cor)*1.1, label = "Within-site", size = 4) +  
-  annotate("text", x = 2.5, y = min(prokdf$Mantel.cor)*1.1, label = "Across-site\n(within country)", size = 4) +  
-  annotate("text", x = 4.5, y = min(prokdf$Mantel.cor)*1.1, label = "Across-site\n(between countries)", size = 4)
+  annotate("text", x = 1, y = min(prokdf$Mantel.cor)*1.2, label = "Within-site", size = 4.5, vjust = 0.3) +  
+  annotate("text", x = 2.5, y = min(prokdf$Mantel.cor)*1.2, label = "Across-site\n(within country)", size = 4.5, vjust = 0.3) +  
+  annotate("text", x = 4.5, y = min(prokdf$Mantel.cor)*1.2, label = "Across-site\n(between countries)", size = 4.5, vjust = 0.3)
 
 prok_p
 
@@ -122,9 +122,9 @@ fungi_p <- ggplot(fungidf, aes(x = dist.class, y = Mantel.cor,
     color = "black",
     size = 4
   ) +
-  annotate("text", x = 1, y = min(fungidf$Mantel.cor)*1.1, label = "Within-site", size = 4) +  
-  annotate("text", x = 2.5, y = min(fungidf$Mantel.cor)*1.1, label = "Across-site\n(within country)", size = 4) +  
-  annotate("text", x = 4.5, y = min(fungidf$Mantel.cor)*1.1, label = "Across-site\n(between countries)", size = 4)
+  annotate("text", x = 1, y = min(fungidf$Mantel.cor)*1.2, label = "Within-site", size = 4.5, vjust = 0.3) +  
+  annotate("text", x = 2.5, y = min(fungidf$Mantel.cor)*1.2, label = "Across-site\n(within country)", size = 4.5, vjust = 0.3) +  
+  annotate("text", x = 4.5, y = min(fungidf$Mantel.cor)*1.2, label = "Across-site\n(between countries)", size = 4.5, vjust = 0.3)
 
 fungi_p
 
