@@ -58,12 +58,12 @@ figM1 <- plot_grid(pcoa_p + theme(legend.position = "none",
                    label_size = 20
 )
 # save PDF
-cairo_pdf("FigCode/FigMain_out/FigM_PCoA_Mantel.pdf", width = 14, height = 18)
+cairo_pdf("FigCode/FigMain_out/FigM_PCoA_Mantel.pdf", width = 14.4, height = 18)
 print(figM1)
 dev.off()
 # save png
 ggsave(filename = "FigCode/FigMain_out/FigM_PCoA_Mantel.png",
-       plot = figM1, width = 14, height = 18, bg = "white")
+       plot = figM1, width = 14.4, height = 18, bg = "white")
 
 
 ## 2. community assembly process and variation partitioning
