@@ -1,5 +1,5 @@
-# Analysis scripts for Ohigashi _et al._ (2025) _Soil Biol. Biochem._
-These scripts are provided to reproduce the results and figures presented in Ohigashi _et al._ (2025) _Soil Biology & Biochemistry_. DOI: [10.1016/j.soilbio.2025.109895](https://doi.org/10.1016/j.soilbio.2025.109895)
+# Analysis scripts for Ohigashi et al. (2025) _Soil Biol. Biochem._
+These scripts are provided to reproduce the results and figures presented in Ohigashi et al. (2025) _Soil Biology and Biochemistry_. DOI: [10.1016/j.soilbio.2025.109895](https://doi.org/10.1016/j.soilbio.2025.109895)
 
 The preprint is also available here: [![bioRxiv](https://img.shields.io/badge/Preprint-bioRxiv-red.svg)](https://doi.org/10.1101/2025.02.17.638669)
 
