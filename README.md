@@ -1,7 +1,7 @@
-# R and Shell scripts for Ohigashi et al. (_in prep_)
-These scripts are provided to reproduce the results and figures presented in Ohigashi et al. Citation details: _in prep_ 
+# Analysis scripts for Ohigashi _et al._ (2025) _Soil Biol. Biochem._
+These scripts are provided to reproduce the results and figures presented in Ohigashi _et al._ (2025) _Soil Biology & Biochemistry_. DOI: [10.1016/j.soilbio.2025.109895](https://doi.org/10.1016/j.soilbio.2025.109895)
 
-[![bioRxiv](https://img.shields.io/badge/bioRxiv-Preprint-red.svg)](https://doi.org/10.1101/2025.02.17.638669)
+The preprint is also avalable here: [![bioRxiv](https://img.shields.io/badge/Preprint-bioRxiv-red.svg)](https://doi.org/10.1101/2025.02.17.638669)
 
 ---
 
